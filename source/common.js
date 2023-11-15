@@ -17,8 +17,28 @@ function decodeUnicodeEscapes(str) {
 */
 function setData() {
   let inputTxt = document.getElementById('inputBox').value;
+
+  let aa = inputTxt.split('event');
+  for (i in aa) {
+    if(i > 0) {
+      let bb = aa[i].replaceAll('}','}^').trim();
+      let cc = bb.split('^')
+      for(j of cc){
+        if(j.includes('param')){
+
+        }
+        let dd = j.split('value:')
+        let ee = dd[1].slice(0,-6).replaceAll('"','').trim();
+        console.log(ee);
+      }
+    }
+  }
+
+
+
   let outPutTxt = document.getElementById('outPutBox');
   let arr = inputTxt.split('name');
+  console.log(arr);
   let data = {};
   for (var i of arr) {
     let splitQuote = i.split('"');
@@ -49,3 +69,20 @@ function setData() {
   console.log(data);
   outPutTxt.value = JSON.stringify(data);
 }
+
+
+  // bundle =  {
+  //   event: [
+  //     {
+  //       param: {
+
+  //       },
+  //       up:{
+
+  //       },
+  //       기타:{
+
+  //       }
+  //     },
+  //   ]
+  // }
