@@ -1,14 +1,4 @@
 /*
-  이스케이프 시퀀스 to 한글 변환 함수 정의
-  인코딩 된 한글 문자열을 디코딩 해주는 함수입니다.
-*/
-function decodeUnicodeEscapes(str) {
-  const decodedString = eval(`"${str}"`);
-  const koreanString = decodeURIComponent(escape(decodedString));
-  return koreanString;
-}
-
-/*
   데이터 딕셔너리 변환 함수 정의
   protoBuf 타입으로 직렬화된 데이터를 JSON 구조로 변환하는 함수입니다.
 */
@@ -19,9 +9,27 @@ function setData() {
 
   // 이벤트 이름을 매핑하는 객체
   const convertKey = {
+    // 이벤트명
     _s: 'session_start',
     _e: 'user_engagement',
     _vs: 'screen_view',
+
+    // 매개변수
+    _si: 'firebase_screen_id',
+    _sn: 'firebase_screen_name',
+    _sc: 'firebase_screen_class',
+    _et: 'engagement_time_msec',
+    _o: 'firebase_event_origin',
+    _pn: 'previous_screen_name',
+    _pc: 'previous_view_controller',
+    _err: 'error',
+    _ev: 'error_parameter',
+    _el: 'error_code',
+    _r: 'realtime',
+    _dbg: 'ga_debug',
+
+    _sid: 'ga_session_id',
+    _sno: 'ga_session_number',
   };
 
   // 최종 결과 배열
@@ -35,13 +43,15 @@ function setData() {
     const cleanedSection = eventSections[i].replaceAll('}', '}^').trim();
     const subSections = cleanedSection.split('^');
 
-    for (let j of subSections) {
-      if (j.includes('param')) {
-        handleParam(j, eventData);
-      } else if (j.includes('user_property')) {
-        handleUserProperty(j, eventData.userProperties);
-      } else if (!j.includes('upload_timestamp_millis') && !j.includes('start_timestamp_millis') && !j == '') {
-        handleEventName(j, convertKey, eventData);
+    for (let subsection of subSections) {
+      if (subsection.includes('param')) {
+        handleParam(subsection, convertKey, eventData);
+      } else if (subsection.includes('user_property')) {
+        handleUserProperty(subsection, eventData.userProperties);
+      } else if (!subsection.includes('upload_timestamp_millis') && !subsection.includes('start_timestamp_millis') && !subsection == '') {
+        handleEventName(subsection, convertKey, eventData);
+      } else if (subsection.includes('upload_timestamp_millis') && subsection.includes('start_timestamp_millis')) {
+        handleRemainData(subsection, eventData.remainDatas);
       }
     }
 
@@ -59,32 +69,52 @@ function initializeEventData() {
     eventName: '',
     eventParams: {},
     userProperties: {},
-    transactions: {},
-    items: [],
     remainDatas: {},
   };
+}
+
+/*
+  이스케이프 시퀀스 to 한글 변환 함수 정의
+  인코딩 된 한글 문자열을 디코딩 해주는 함수입니다.
+*/
+function decodeUnicodeEscapes(value, dataType) {
+  if (dataType == 'string') {
+    const decodedValue = eval(`"${value}"`);
+    const koreanValue = decodeURIComponent(escape(decodedValue));
+
+    return koreanValue;
+  } else if (dataType == 'int') {
+    const numberValue = Number(value);
+
+    return numberValue;
+  }
 }
 
 /*
   param 데이터 처리 함수
   이벤트 매개변수, 전자상거래 정보를 설정합니다.
 */
-function handleParam(paramSection, eventData) {
+function handleParam(paramSection, convertKey, eventData) {
   const key = paramSection.split('"')[1];
   const value = paramSection.split('value:')[1].slice(0, -6).replaceAll('"', '').trim();
+  const transactionKey = ['currency', 'transaction_id', 'value', 'tax', 'shipping', 'affiliation', 'coupon'];
 
-  if (key == '_sn') {
-    eventData.remainDatas['screen_name'] = decodeUnicodeEscapes(value);
-  } else if (key == '_sc') {
-    eventData.remainDatas['screen_class'] = decodeUnicodeEscapes(value);
-  } else if (key.includes('ep_') || key.includes('event_') || key.includes('dimension')) {
-    eventData.eventParams[key] = decodeUnicodeEscapes(value);
-  } else if (key.includes('cm_') || key.includes('metric')) {
-    eventData.eventParams[key] = value;
-  } else if (key.includes('currency') || key.includes('transaction_id') || key.includes('affiliation') || key.includes('coupon')) {
-    eventData.transactions[key] = decodeUnicodeEscapes(value);
-  } else if (key.includes('value') || key.includes('tax') || key.includes('shipping')) {
-    eventData.transactions[key] = value;
+  const isInt = paramSection.includes('int_value');
+  const isString = paramSection.includes('string_value');
+  const type = isInt ? 'int' : isString ? 'string' : '';
+
+  if (transactionKey.includes(key)) {
+    if (!eventData.eventParams.transactions) {
+      eventData.eventParams.transactions = {};
+    }
+    eventData.eventParams.transactions[convertKey[key] || key] = decodeUnicodeEscapes(value, type);
+  } else if (key == 'items') {
+    if (!eventData.eventParams.items) {
+      eventData.eventParams.items = [];
+    }
+    eventData.eventParams.items[convertKey[key] || key] = decodeUnicodeEscapes(value, type);
+  } else {
+    eventData.eventParams[convertKey[key] || key] = decodeUnicodeEscapes(value, type);
   }
 }
 
@@ -96,8 +126,28 @@ function handleUserProperty(userPropertySection, userProperties) {
   const key = userPropertySection.split('"')[1];
   const value = userPropertySection.split('value:')[1].slice(0, -6).replaceAll('"', '').trim();
 
-  if (key.includes('up_') || key.includes('user_') || key.includes('dimension')) {
-    userProperties[key] = decodeUnicodeEscapes(value);
+  const isInt = userPropertySection.includes('int_value');
+  const isString = userPropertySection.includes('string_value');
+  const type = isInt ? 'int' : isString ? 'string' : '';
+
+  if (key !== '') {
+    userProperties[key] = decodeUnicodeEscapes(value, type);
+  }
+}
+
+/*
+  이 외 데이터 추출 함수
+  이벤트 매개변수, 사용자 속성, 전자상거래 정보 외의 정보를 설정합니다.
+*/
+function handleRemainData(remainSection, remainDatas) {
+  const sections = remainSection.split('}')[0].trim().replaceAll('\n', '').split('        ');
+  for (let i of sections) {
+    const key = i.split(':')[0].trim();
+    const value = i.split(':')[1].replace(/"/g, '').trim();
+
+    if (key !== '') {
+      remainDatas[key] = value;
+    }
   }
 }
 
@@ -117,13 +167,13 @@ function handleEventName(section, convertKey, eventData) {
 //   event: [
 //     {
 //       param: {
-
+//         // 이벤트 매개변수 + 거래 + 상품 +
 //       },
 //       up:{
-
+//         // 사용자 속성
 //       },
 //       기타:{
-
+//         // 이벤트명
 //       }
 //     },
 //   ]
