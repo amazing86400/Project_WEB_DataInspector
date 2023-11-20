@@ -3,10 +3,6 @@
   protoBuf 타입으로 직렬화된 데이터를 JSON 구조로 변환하는 함수입니다.
 */
 function setData() {
-  const inputBox = document.getElementById('inputBox');
-  const inputTxt = inputBox.value;
-  const eventSections = inputTxt.split('bundle {\n  protocol_version: 1\n  '); // kb
-
   // 이벤트 이름을 매핑하는 객체
   const convertKey = {
     // 이벤트명
@@ -32,27 +28,35 @@ function setData() {
     _sno: 'ga_session_number',
   };
 
-  // 최종 결과 배열
-  const events = [];
+  const inputBox = document.getElementById('inputBox');
+  const inputTxt = inputBox.value;
+  const bundleSections = inputTxt.split('bundle {\n  protocol_version: 1\n  '); // 번들 기준 Array
+  const events = []; // 최종 데이터 Array
 
-  // 데이터 설정
-  for (let i = 1; i < eventSections.length; i++) {
-    // 이벤트 데이터 초기화
-    let eventData = initializeEventData();
+  // 번들 기준으로 반복문
+  for (let i = 1; i < bundleSections.length; i++) {
+    const eventSections = bundleSections[i].split('event'); // 이벤트 기준 Array
 
-    const paramSection = eventSections[i].split('\n    }'); // kb
+    // 이벤트 기준으로 반복문: ""값일 경우 대비하여 가장 처음 조건문 실행
+    for (let j in eventSections) {
+      if (eventSections[j].length > 1) {
+        let eventData = initializeEventData(); // 이벤트 데이터 초기화
+        const paramSections = eventSections[j].split('\n    }'); // param 기준 Array
 
-    for (let j = 0; j < paramSection.length; j++) {
-      const param = paramSection[j];
-      if (j !== paramSection.length - 1) {
-        handleParam(param, convertKey, eventData);
-      } else {
-        eventData.eventName = param.split('"')[1];
-        handleRemainData(param, eventData);
+        // 매개변수 기준으로 반복문: 데이터 설정
+        for (let k = 0; k < paramSections.length; k++) {
+          const param = paramSections[k];
+          if (k !== paramSections.length - 1) {
+            handleParam(param, convertKey, eventData); // 이벤트 매개변수 및 전자상거래 데이터 설정
+          } else {
+            const eventNameKey = param.split('"')[1];
+            eventData.eventName = convertKey[eventNameKey] || eventNameKey; // 이벤트명 설정
+            handleRemainData(param, eventData); // 사용자 속성 및 이 외 데이터 설정
+          }
+        }
+        events.push(eventData);
       }
     }
-
-    events.push(eventData);
     console.log(events);
   }
 }
@@ -89,34 +93,32 @@ function decodeUnicodeEscapes(value, dataType) {
 
 /*
   param 데이터 처리 함수
-  이벤트 매개변수, 전자상거래 정보를 설정합니다.
+  이벤트 매개변수 및 전자상거래 정보를 설정합니다.
 */
-function handleParam(paramSection, convertKey, eventData) {
-  if (!paramSection.includes('items')) {
-    const key = paramSection.split('"')[1];
-    const value = paramSection.split('value:')[1].replaceAll('"', '').trim();
+function handleParam(paramSections, convertKey, eventData) {
+  if (!paramSections.includes('items')) {
+    // key, value 설정
+    const key = paramSections.split('"')[1];
+    const value = paramSections.split('value:')[1].replaceAll('"', '').trim();
     const transactionKey = ['currency', 'transaction_id', 'value', 'tax', 'shipping', 'affiliation', 'coupon'];
 
-    const isInt = paramSection.includes('int_value');
-    const isString = paramSection.includes('string_value');
+    // 데이터 타입 설정
+    const isInt = paramSections.includes('int_value');
+    const isString = paramSections.includes('string_value');
     const type = isInt ? 'int' : isString ? 'string' : '';
 
-    if (transactionKey.includes(key)) {
-      if (!eventData.eventParams.transactions) {
-        eventData.eventParams.transactions = {};
-      }
-      eventData.eventParams.transactions[convertKey[key] || key] = decodeUnicodeEscapes(value, type);
-    } else {
-      eventData.eventParams[convertKey[key] || key] = decodeUnicodeEscapes(value, type);
-    }
+    const target = transactionKey.includes(key) ? eventData.eventParams.transactions || {} : eventData.eventParams;
+    target[convertKey[key] || key] = decodeUnicodeEscapes(value, type);
+  } else {
+    const itemSections = paramSections.split('6: {\n        6: {\n          ');
+    eventData.eventParams.items = eventData.eventParams.items || [];
+    handleItems(itemSections, eventData.eventParams.items);
   }
-  //  else {
-  // }
 }
 
 /*
   이 외 데이터 추출 함수
-  이벤트 매개변수, 사용자 속성, 전자상거래 정보 외의 정보를 설정합니다.
+  사용자 속성 및 이 외 정보를 설정합니다.
 */
 function handleRemainData(remainSection, eventData) {
   const userSection = remainSection.split('user_property {');
@@ -135,9 +137,9 @@ function handleRemainData(remainSection, eventData) {
       }
 
       const remainData = userProperty.split('\n  }\n')[1].split('\n  ');
-      for (let j of remainData) {
-        const key = j.split(':')[0].trim();
-        const value = j.split(':')[1].replace(/"/g, '').trim();
+      for (let k of remainData) {
+        const key = k.split(':')[0].trim();
+        const value = k.split(':')[1].replace(/"/g, '').trim();
         if (key !== '') {
           eventData.remainDatas[key] = value;
         }
@@ -164,20 +166,33 @@ function handleUserProperty(userPropertySection, userProperties) {
 }
 
 /*
-  JSON 페이로드
+  상품 데이터 처리 함수
+  전자상거래 상품 정보를 설정합니다.
 */
-// bundle =  {
-//   event: [
-//     {
-//       param: {
-//         // 이벤트 매개변수 + 거래 + 상품 +
-//       },
-//       up:{
-//         // 사용자 속성
-//       },
-//       기타:{
-//         // 이벤트명
-//       }
-//     },
-//   ]
-// }
+function handleItems(itemSection, items) {
+  for (let i = 1; i < itemSection.length; i++) {
+    const item = {};
+    const itemParamSections = itemSection[i].split('1:');
+    for (let j = 0; j < itemParamSections.length; j++) {
+      const paramSection = itemParamSections[j];
+
+      if (paramSection.length < 2) continue;
+
+      // item_name 기준으로 조건: 13(구분자)
+      if (!paramSection.includes('13:')) {
+        const key = paramSection.split('"')[1];
+        if (paramSection.includes('2:')) {
+          const value = paramSection.split('"')[3].trim();
+          item[key] = decodeUnicodeEscapes(value, 'string');
+        } else if (paramSection.includes('3:')) {
+          const value = paramSection.split('3:')[1].split('}')[0].trim();
+          item[key] = decodeUnicodeEscapes(value, 'int');
+        }
+      } else {
+        const value = paramSection.split('"')[1].trim();
+        item['item_name'] = decodeUnicodeEscapes(value, 'string');
+      }
+    }
+    items.push(item);
+  }
+}
