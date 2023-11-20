@@ -5,7 +5,7 @@
 function setData() {
   const inputBox = document.getElementById('inputBox');
   const inputTxt = inputBox.value;
-  const eventSections = inputTxt.split('event');
+  const eventSections = inputTxt.split('bundle {\n  protocol_version: 1\n  '); // kb
 
   // 이벤트 이름을 매핑하는 객체
   const convertKey = {
@@ -40,18 +40,15 @@ function setData() {
     // 이벤트 데이터 초기화
     let eventData = initializeEventData();
 
-    const cleanedSection = eventSections[i].replaceAll('}', '}^').trim();
-    const subSections = cleanedSection.split('^');
+    const paramSection = eventSections[i].split('\n    }'); // kb
 
-    for (let subsection of subSections) {
-      if (subsection.includes('param')) {
-        handleParam(subsection, convertKey, eventData);
-      } else if (subsection.includes('user_property')) {
-        handleUserProperty(subsection, eventData.userProperties);
-      } else if (!subsection.includes('upload_timestamp_millis') && !subsection.includes('start_timestamp_millis') && !subsection == '') {
-        handleEventName(subsection, convertKey, eventData);
-      } else if (subsection.includes('upload_timestamp_millis') && subsection.includes('start_timestamp_millis')) {
-        handleRemainData(subsection, eventData.remainDatas);
+    for (let j = 0; j < paramSection.length; j++) {
+      const param = paramSection[j];
+      if (j !== paramSection.length - 1) {
+        handleParam(param, convertKey, eventData);
+      } else {
+        eventData.eventName = param.split('"')[1];
+        handleRemainData(param, eventData);
       }
     }
 
@@ -95,26 +92,57 @@ function decodeUnicodeEscapes(value, dataType) {
   이벤트 매개변수, 전자상거래 정보를 설정합니다.
 */
 function handleParam(paramSection, convertKey, eventData) {
-  const key = paramSection.split('"')[1];
-  const value = paramSection.split('value:')[1].slice(0, -6).replaceAll('"', '').trim();
-  const transactionKey = ['currency', 'transaction_id', 'value', 'tax', 'shipping', 'affiliation', 'coupon'];
+  if (!paramSection.includes('items')) {
+    const key = paramSection.split('"')[1];
+    const value = paramSection.split('value:')[1].replaceAll('"', '').trim();
+    const transactionKey = ['currency', 'transaction_id', 'value', 'tax', 'shipping', 'affiliation', 'coupon'];
 
-  const isInt = paramSection.includes('int_value');
-  const isString = paramSection.includes('string_value');
-  const type = isInt ? 'int' : isString ? 'string' : '';
+    const isInt = paramSection.includes('int_value');
+    const isString = paramSection.includes('string_value');
+    const type = isInt ? 'int' : isString ? 'string' : '';
 
-  if (transactionKey.includes(key)) {
-    if (!eventData.eventParams.transactions) {
-      eventData.eventParams.transactions = {};
+    if (transactionKey.includes(key)) {
+      if (!eventData.eventParams.transactions) {
+        eventData.eventParams.transactions = {};
+      }
+      eventData.eventParams.transactions[convertKey[key] || key] = decodeUnicodeEscapes(value, type);
+    } else {
+      eventData.eventParams[convertKey[key] || key] = decodeUnicodeEscapes(value, type);
     }
-    eventData.eventParams.transactions[convertKey[key] || key] = decodeUnicodeEscapes(value, type);
-  } else if (key == 'items') {
-    if (!eventData.eventParams.items) {
-      eventData.eventParams.items = [];
+  }
+  //  else {
+  // }
+}
+
+/*
+  이 외 데이터 추출 함수
+  이벤트 매개변수, 사용자 속성, 전자상거래 정보 외의 정보를 설정합니다.
+*/
+function handleRemainData(remainSection, eventData) {
+  const userSection = remainSection.split('user_property {');
+  for (let i = 1; i < userSection.length; i++) {
+    const userProperty = userSection[i];
+    if (i !== userSection.length - 1) {
+      if (userProperty.includes('value:')) {
+        handleUserProperty(userProperty, eventData.userProperties);
+      }
+    } else {
+      if (userProperty.includes('user_property {')) {
+        const lastUP = userProperty.split('\n  }\n')[0];
+        if (lastUP.includes('value:')) {
+          handleUserProperty(lastUP, eventData.userProperties);
+        }
+      }
+
+      const remainData = userProperty.split('\n  }\n')[1].split('\n  ');
+      for (let j of remainData) {
+        const key = j.split(':')[0].trim();
+        const value = j.split(':')[1].replace(/"/g, '').trim();
+        if (key !== '') {
+          eventData.remainDatas[key] = value;
+        }
+      }
     }
-    eventData.eventParams.items[convertKey[key] || key] = decodeUnicodeEscapes(value, type);
-  } else {
-    eventData.eventParams[convertKey[key] || key] = decodeUnicodeEscapes(value, type);
   }
 }
 
@@ -124,7 +152,7 @@ function handleParam(paramSection, convertKey, eventData) {
 */
 function handleUserProperty(userPropertySection, userProperties) {
   const key = userPropertySection.split('"')[1];
-  const value = userPropertySection.split('value:')[1].slice(0, -6).replaceAll('"', '').trim();
+  const value = userPropertySection.split('value:')[1].replaceAll('"', '').split('\n')[0].trim();
 
   const isInt = userPropertySection.includes('int_value');
   const isString = userPropertySection.includes('string_value');
@@ -133,31 +161,6 @@ function handleUserProperty(userPropertySection, userProperties) {
   if (key !== '') {
     userProperties[key] = decodeUnicodeEscapes(value, type);
   }
-}
-
-/*
-  이 외 데이터 추출 함수
-  이벤트 매개변수, 사용자 속성, 전자상거래 정보 외의 정보를 설정합니다.
-*/
-function handleRemainData(remainSection, remainDatas) {
-  const sections = remainSection.split('}')[0].trim().replaceAll('\n', '').split('        ');
-  for (let i of sections) {
-    const key = i.split(':')[0].trim();
-    const value = i.split(':')[1].replace(/"/g, '').trim();
-
-    if (key !== '') {
-      remainDatas[key] = value;
-    }
-  }
-}
-
-/*
-  이벤트 이름 추출 함수
-  이벤트 이름을 설정합니다.
-*/
-function handleEventName(section, convertKey, eventData) {
-  const key = section.split('"')[1];
-  eventData.eventName = convertKey[key] || key;
 }
 
 /*
