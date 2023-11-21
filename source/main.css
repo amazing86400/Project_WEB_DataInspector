@@ -1,3 +1,6 @@
+* {
+}
+
 .container {
   display: flex;
   align-items: flex-start;
@@ -57,7 +60,13 @@ table {
   margin-left: 15px;
   font-size: 14px;
   border-collapse: collapse;
-  border-spacing: 0px;
+}
+
+thead > tr > th {
+  background: rgb(238,240,243);
+  text-align: left;
+  padding-left: 25px;
+  padding: 3px 20px;
 }
 
 thead, td, th {
@@ -71,4 +80,20 @@ tbody > tr > td:first-child {
 tbody > tr > td:nth-child(2) {
   width: 350px;
   table-layout: fixed;
+  border-right: none;
+}
+
+tbody > tr > td:nth-child(3) {
+  border-left: none;
+}
+
+tbody > tr > td:nth-child(3) > div {
+  font-size: 12px;
+  margin-right: 5px;
+  width: 30px;
+  float: right;
+  border: 1px solid rgb(249, 169, 43);
+  background-color: rgb(249, 169, 43);
+  border-radius: 5px;
+  text-align: center;
 }
