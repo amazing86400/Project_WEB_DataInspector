@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="./common.js"></script>
+    <script src="./convertJson.js"></script>
     <link rel="stylesheet" href="./main.css" />
     <title>GMP Data Inspector</title>
   </head>
@@ -16,7 +17,7 @@
     </header>
     <div class="container">
       <textarea id="inputBox" placeholder="데이터를 붙여놓으십쇼"></textarea><button type="button" onclick="setData();">Convert</button>
-      <div class="eventList">
+      <div class="eventList" id="eventList">
         <div class="eventSummary">
           <div class="evnetNo">1</div>
           <div class="eventName">screen_view</div>
@@ -40,21 +41,21 @@
               <td>screen_name</td>
               <td>하이하이</td>
               <td>
-                <div>str</div>
+                <div class="typeString">str</div>
               </td>
             </tr>
             <tr>
               <td>screen_class</td>
               <td>ViewController</td>
               <td>
-                <div>str</div>
+                <div class="typeString">str</div>
               </td>
             </tr>
             <tr>
               <td>ep_dimension1</td>
               <td>맞춤 측정기준1</td>
               <td>
-                <div>str</div>
+                <div class="typeString">str</div>
               </td>
             </tr>
           </tbody>
@@ -70,21 +71,21 @@
               <td>up_cid</td>
               <td>12A23EVKSWK0522</td>
               <td>
-                <div>str</div>
+                <div class="typeString">str</div>
               </td>
             </tr>
             <tr>
               <td>up_uid</td>
               <td>ASDKAOAWMVDL23CALM402</td>
               <td>
-                <div>str</div>
+                <div class="typeString">str</div>
               </td>
             </tr>
             <tr>
               <td>up_gender</td>
               <td>M</td>
               <td>
-                <div>str</div>
+                <div class="typeString">str</div>
               </td>
             </tr>
           </tbody>
@@ -100,21 +101,21 @@
               <td>transacion_id</td>
               <td>AFKWOV219302810</td>
               <td>
-                <div>str</div>
+                <div class="typeString">str</div>
               </td>
             </tr>
             <tr>
               <td>value</td>
               <td>30000</td>
               <td>
-                <div>num</div>
+                <div class="typeNum">num</div>
               </td>
             </tr>
             <tr>
               <td>shipping</td>
               <td>3000</td>
               <td>
-                <div>num</div>
+                <div class="typeNum">num</div>
               </td>
             </tr>
           </tbody>
@@ -130,21 +131,21 @@
               <td>item_id</td>
               <td>KFO20949292</td>
               <td>
-                <div>str</div>
+                <div class="typeString">str</div>
               </td>
             </tr>
             <tr>
               <td>item_name</td>
               <td>기능성 옷</td>
               <td>
-                <div>str</div>
+                <div class="typeString">str</div>
               </td>
             </tr>
             <tr>
               <td>quantity</td>
               <td>1</td>
               <td>
-                <div>num</div>
+                <div class="typeNum">num</div>
               </td>
             </tr>
           </tbody>

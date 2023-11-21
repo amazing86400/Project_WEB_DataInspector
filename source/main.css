@@ -14,7 +14,6 @@ button {
   padding: 2px 16px;
   border-color: transparent;
   height: 36px;
-  transition: all .3s;
   font-size: 14px;
   cursor: pointer;
   background-color: rgb(249, 169, 43);
@@ -89,8 +88,20 @@ tbody > tr > td:nth-child(3) > div {
   margin-right: 5px;
   width: 30px;
   float: right;
-  border: 1px solid rgb(249, 169, 43);
-  background-color: rgb(249, 169, 43);
+  user-select: none;
   border-radius: 5px;
   text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-use-select: none;
+}
+
+.typeNum {
+  border: 1px solid rgb(168, 180, 247);
+  background-color: rgb(168, 180, 247);
+}
+
+.typeString {
+  border: 1px solid rgb(249, 169, 43);
+  background-color: rgb(249, 169, 43);
 }
