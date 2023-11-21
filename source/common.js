@@ -3,61 +3,66 @@
   protoBuf 타입으로 직렬화된 데이터를 JSON 구조로 변환하는 함수입니다.
 */
 function setData() {
-  // 이벤트 이름을 매핑하는 객체
-  const convertKey = {
-    // 이벤트명
-    _s: 'session_start',
-    _e: 'user_engagement',
-    _vs: 'screen_view',
+  try {
+    // 이벤트 이름을 매핑하는 객체
+    const convertKey = {
+      // 이벤트명
+      _s: 'session_start',
+      _e: 'user_engagement',
+      _vs: 'screen_view',
 
-    // 매개변수
-    _si: 'firebase_screen_id',
-    _sn: 'firebase_screen_name',
-    _sc: 'firebase_screen_class',
-    _et: 'engagement_time_msec',
-    _o: 'firebase_event_origin',
-    _pn: 'previous_screen_name',
-    _pc: 'previous_view_controller',
-    _err: 'error',
-    _ev: 'error_parameter',
-    _el: 'error_code',
-    _r: 'realtime',
-    _dbg: 'ga_debug',
+      // 매개변수
+      _si: 'firebase_screen_id',
+      _sn: 'firebase_screen_name',
+      _sc: 'firebase_screen_class',
+      _et: 'engagement_time_msec',
+      _o: 'firebase_event_origin',
+      _pn: 'previous_screen_name',
+      _pc: 'previous_view_controller',
+      _err: 'error',
+      _ev: 'error_parameter',
+      _el: 'error_code',
+      _r: 'realtime',
+      _dbg: 'ga_debug',
 
-    _sid: 'ga_session_id',
-    _sno: 'ga_session_number',
-  };
+      _sid: 'ga_session_id',
+      _sno: 'ga_session_number',
+    };
 
-  const inputBox = document.getElementById('inputBox');
-  const inputTxt = inputBox.value;
-  const bundleSections = inputTxt.split('bundle {\n  protocol_version: 1\n  '); // 번들 기준 Array
-  const events = []; // 최종 데이터 Array
+    const inputBox = document.getElementById('inputBox');
+    const inputTxt = inputBox.value.trim();
+    const bundleSections = inputTxt.split('bundle {\n  protocol_version: 1\n  '); // 번들 기준 Array
+    const events = []; // 최종 데이터 Array
 
-  // 번들 기준으로 반복문
-  for (let i = 1; i < bundleSections.length; i++) {
-    const eventSections = bundleSections[i].split('event'); // 이벤트 기준 Array
+    // 번들 기준으로 반복문
+    for (let i = 1; i < bundleSections.length; i++) {
+      const eventSections = bundleSections[i].split('event {'); // 이벤트 기준 Array
 
-    // 이벤트 기준으로 반복문: ""값일 경우 대비하여 가장 처음 조건문 실행
-    for (let j in eventSections) {
-      if (eventSections[j].length > 1) {
-        let eventData = initializeEventData(); // 이벤트 데이터 초기화
-        const paramSections = eventSections[j].split('\n    }'); // param 기준 Array
+      // 이벤트 기준으로 반복문: ""값일 경우 대비하여 가장 처음 조건문 실행
+      for (let j in eventSections) {
+        if (eventSections[j].length > 1) {
+          let eventData = initializeEventData(); // 이벤트 데이터 초기화
+          const paramSections = eventSections[j].split('\n    }'); // param 기준 Array
 
-        // 매개변수 기준으로 반복문: 데이터 설정
-        for (let k = 0; k < paramSections.length; k++) {
-          const param = paramSections[k];
-          if (k !== paramSections.length - 1) {
-            handleParam(param, convertKey, eventData); // 이벤트 매개변수 및 전자상거래 데이터 설정
-          } else {
-            const eventNameKey = param.split('"')[1];
-            eventData.eventName = convertKey[eventNameKey] || eventNameKey; // 이벤트명 설정
-            handleRemainData(param, eventData); // 사용자 속성 및 이 외 데이터 설정
+          // 매개변수 기준으로 반복문: 데이터 설정
+          for (let k = 0; k < paramSections.length; k++) {
+            const param = paramSections[k];
+            if (k !== paramSections.length - 1) {
+              handleParam(param, convertKey, eventData); // 이벤트 매개변수 및 전자상거래 데이터 설정
+            } else {
+              const eventNameKey = param.split('"')[1];
+              eventData.eventName = convertKey[eventNameKey] || eventNameKey; // 이벤트명 설정
+              handleRemainData(param, eventData); // 사용자 속성 및 이 외 데이터 설정
+            }
           }
+          events.push(eventData);
         }
-        events.push(eventData);
       }
     }
     console.log(events);
+  } catch (e) {
+    console.log('setData 함수 ERROR');
+    console.log(e.message);
   }
 }
 
@@ -99,7 +104,8 @@ function handleParam(paramSections, convertKey, eventData) {
   if (!paramSections.includes('items')) {
     // key, value 설정
     const key = paramSections.split('"')[1];
-    const value = paramSections.split('value:')[1].replaceAll('"', '').trim();
+    const value = paramSections.split('value:')[1].replaceAll('"', '').trim() || 'Error: 값이 없습니다.';
+
     const transactionKey = ['currency', 'transaction_id', 'value', 'tax', 'shipping', 'affiliation', 'coupon'];
 
     // 데이터 타입 설정
@@ -139,7 +145,7 @@ function handleRemainData(remainSection, eventData) {
       const remainData = userProperty.split('\n  }\n')[1].split('\n  ');
       for (let k of remainData) {
         const key = k.split(':')[0].trim();
-        const value = k.split(':')[1].replace(/"/g, '').trim();
+        const value = k.split(':')[1].replace(/"/g, '').trim() || 'Error: 값이 없습니다.';
         if (key !== '') {
           eventData.remainDatas[key] = value;
         }
