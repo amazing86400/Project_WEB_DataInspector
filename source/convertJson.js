@@ -115,7 +115,10 @@ function handleParam(paramSections, convertKey, eventData) {
     const isString = paramSections.includes('string_value');
     const type = isInt ? 'int' : isString ? 'string' : '';
 
-    const target = transactionKey.includes(key) ? eventData.eventParams.transactions || {} : eventData.eventParams;
+    if (!eventData.eventParams.transactions) {
+      eventData.eventParams.transactions = {};
+    }
+    const target = transactionKey.includes(key) ? (eventData.eventParams.transactions = eventData.eventParams.transactions || {}) : eventData.eventParams;
     target[convertKey[key] || key] = decodeUnicodeEscapes(value, type);
   } else {
     const itemSections = paramSections.split('6: {\n        6: {\n          ');
