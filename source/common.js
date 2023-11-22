@@ -27,23 +27,21 @@ function viewList() {
 // 발생한 이벤트 데이터 출력해주는 함수
 function viewEvent(no) {
   const viewEvent = events[no];
+  clearTableContents();
   if(viewEvent.eventParams) {
     const epTbody = document.getElementById('epTbody');
-    epTbody.replaceChildren()
     insertData(viewEvent.eventParams, epTbody)
   }
 
   // 사용자 속성 출력
   if(viewEvent.userProperties) {
     const upTbody = document.getElementById('upTbody');
-    upTbody.replaceChildren()
     insertData(viewEvent.userProperties, upTbody)
   }
 
   // 거래 데이터 출력
   if(viewEvent.eventParams.transactions) {
     const transactionTbody = document.getElementById('transactionTbody');
-    transactionTbody.replaceChildren()
     insertData(viewEvent.eventParams.transactions, transactionTbody)
   }
 
@@ -51,7 +49,6 @@ function viewEvent(no) {
   if(viewEvent.eventParams.items) {
     const items = viewEvent.eventParams.items
     const itemsTbody = document.getElementById('itemsTbody');
-    itemsTbody.replaceChildren()
     for(i in items) {
       insertData(items[i], itemsTbody, i)
     }
@@ -60,7 +57,6 @@ function viewEvent(no) {
   // 기타 데이터 출력
   if(viewEvent.remainDatas) {
     const remainTbody = document.getElementById('remainTbody');
-    remainTbody.replaceChildren()
     insertData(viewEvent.remainDatas, remainTbody)
   }
 }
@@ -94,6 +90,30 @@ function insertData(data, tbody, i) {
     }
   }
 }
+
+// function deleteList() {
+//   const epTbody = document.getElementById('epTbody');
+//   const upTbody = document.getElementById('upTbody');
+//   const transactionTbody = document.getElementById('transactionTbody');
+//   const itemsTbody = document.getElementById('itemsTbody');
+//   const remainTbody = document.getElementById('remainTbody');
+
+//   epTbody.replaceChildren();
+//   upTbody.replaceChildren();
+//   transactionTbody.replaceChildren();
+//   itemsTbody.replaceChildren();
+//   remainTbody.replaceChildren();
+// }
+
+function clearTableContents() {
+  const tableIds = ['epTbody', 'upTbody', 'transactionTbody', 'itemsTbody', 'remainTbody'];
+
+  tableIds.forEach((tableId) => {
+    const tbody = document.getElementById(tableId);
+    tbody.replaceChildren();
+  });
+}
+
 
 // 이벤트 리스트 초기화 함수
 function clearList() {

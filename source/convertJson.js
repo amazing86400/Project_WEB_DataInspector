@@ -108,6 +108,7 @@ function handleParam(paramSections, convertKey, eventData) {
     // key, value 설정
     const key = paramSections.split('"')[1];
     const value = paramSections.split('value:')[1] ? paramSections.split('value:')[1].replaceAll('"', '').trim() : 'Error: 값이 없습니다.';
+    
 
     const transactionKey = ['currency', 'transaction_id', 'value', 'tax', 'shipping', 'affiliation', 'coupon', 'payment_type','shipping_tier'];
 

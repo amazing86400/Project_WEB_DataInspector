@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Noto';
+  src: url(font/NotoSansKR-VariableFont_wght.ttf);
+}
+
 .container {
   display: flex;
   align-items: flex-start;
@@ -39,8 +44,11 @@ button {
 
 .eventSummary {
   cursor: pointer;
-  border: 1px solid black;
-  /* height: 30px; */
+    border: 1px solid black;
+    /* height: 30px; */
+    font-family: 'Noto';
+    font-size: 14px;
+    font-weight: 400;
 }
 
 .evnetNo {
@@ -61,34 +69,53 @@ button {
 .time {
   margin: 6px 5px 5px 5px;
   float: right;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.tableField {
+  margin-left: 20px;
 }
 
 table {
   width: 600px;
-  margin-left: 15px;
+  word-break:break-all;
   font-size: 14px;
   border-collapse: collapse;
+}
+
+thead {
+  height: 33px;
 }
 
 thead > tr > th {
   background: rgb(238,240,243);
   text-align: left;
   padding-left: 25px;
-  padding: 3px 20px;
+  padding: 3px 13px;
 }
 
 thead, td, th {
-  border: 1px solid black;
+  font-family: 'Noto';
+  border: 1px solid rgb(218 222 228);
+  padding-left: 7px;
 }
 
 tbody > tr > td:first-child {
   width: 200px;
+  font-family: 'Noto';
+  font-weight: 500;
+  font-size: 13px;
 }
 
 tbody > tr > td:nth-child(2) {
+  font-family: 'Noto';
   width: 350px;
   table-layout: fixed;
   border-right: none;
+  font-size: 12.5px;
+  font-weight: 400;
+  color: rgb(59,68,81);
 }
 
 tbody > tr > td:nth-child(3) {
@@ -103,6 +130,7 @@ tbody > tr > td:nth-child(3) > div {
   user-select: none;
   border-radius: 5px;
   text-align: center;
+  height: 19px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-use-select: none;
