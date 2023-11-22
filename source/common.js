@@ -1,6 +1,9 @@
 function setData() {
   convertJson();
   viewList();
+  // const textArea = document.getElementById('inputBox')
+  // textArea.value = '';
+  // convertBtn.disabled = true
 }
 
 //반목문으로 수정
