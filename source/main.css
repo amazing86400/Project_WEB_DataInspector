@@ -117,3 +117,11 @@ tbody > tr > td:nth-child(3) > div {
   border: 1px solid rgb(249, 169, 43);
   background-color: rgb(249, 169, 43);
 }
+
+.sum {
+  display: none;
+}
+
+#remainThead {
+  cursor: pointer;
+}

@@ -17,7 +17,7 @@
     </header>
     <div class="container">
       <textarea id="inputBox" placeholder="데이터를 붙여놓으십쇼"></textarea>
-      <button class="convertBtn" type="button" onclick="setData();">Convert</button>
+      <button class="convertBtn" type="button" disabled onclick="setData();">Convert</button>
       <div>
         <!-- <div class="eventList">Event List</div> -->
         <div class="eventList" id="eventList"></div>
@@ -61,23 +61,24 @@
           </tbody>
         </table>
         <table>
-          <thead>
+          <thead id="remainThead" onclick="dropDown();">
             <tr>
-              <th colspan="3">RemainDatas</th>
+              <th colspan="3">Remain Datas</th>
+              <!-- <th>▼</th> -->
             </tr>
           </thead>
-          <tbody id="remainTbody">
+          <tbody id="remainTbody" class="remainTbody sum">
           </tbody>
         </table>
       </div>
     </div>
-    <!-- <script>
+    <script>
       const textArea = document.getElementById('inputBox');
       const convertBtn = document.querySelector('.convertBtn');
 
       textArea.addEventListener('input', ()=> {
         textArea.value == '' ? convertBtn.disabled = true : convertBtn.disabled = false;
       })
-    </script> -->
+    </script>
   </body>
 </html>
