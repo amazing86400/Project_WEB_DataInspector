@@ -22,9 +22,9 @@ function convertJson() {
       _o: 'firebase_event_origin',
       _pn: 'previous_screen_name',
       _pc: 'previous_view_controller',
-      _err: 'error',
+      _err: 'error_code',
       _ev: 'error_parameter',
-      _el: 'error_code',
+      _el: 'error',
       _r: 'realtime',
       _dbg: 'ga_debug',
 
@@ -162,7 +162,7 @@ function handleRemainData(remainSection, eventData) {
 */
 function handleUserProperty(userPropertySection, userProperties) {
   const key = userPropertySection.split('"')[1];
-  const value = userPropertySection.split('value:')[1].replaceAll('"', '').split('\n')[0].trim();
+  const value = userPropertySection.split('value:')[1].replaceAll('"', '').split('\n')[0].trim() || 'Error: 값이 없습니다.';
 
   const isInt = userPropertySection.includes('int_value');
   const isString = userPropertySection.includes('string_value');
@@ -190,14 +190,14 @@ function handleItems(itemSection, items) {
       if (!paramSection.includes('13:')) {
         const key = paramSection.split('"')[1];
         if (paramSection.includes('2:')) {
-          const value = paramSection.split('"')[3].trim();
+          const value = paramSection.split('"')[3].trim() || 'Error: 값이 없습니다.';
           item[key] = decodeUnicodeEscapes(value, 'string');
         } else if (paramSection.includes('3:')) {
-          const value = paramSection.split('3:')[1].split('}')[0].trim();
+          const value = paramSection.split('3:')[1].split('}')[0].trim() || 'Error: 값이 없습니다.';
           item[key] = decodeUnicodeEscapes(value, 'int');
         }
       } else {
-        const value = paramSection.split('"')[1].trim();
+        const value = paramSection.split('"')[1].trim() || 'Error: 값이 없습니다.';
         item['item_name'] = decodeUnicodeEscapes(value, 'string');
       }
     }
