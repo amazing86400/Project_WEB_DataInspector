@@ -17,8 +17,20 @@ button {
   font-size: 14px;
   cursor: pointer;
   background-color: rgb(249, 169, 43);
+}
+
+.convertBtn {
   margin: 300px 20px 0px 20px;
 }
+
+.clearBtn {
+  margin-top: 20px;
+}
+
+.buttonField {
+  text-align: center;
+}
+
 .eventList {
   width: 400px;
   /* height: 30px; */
@@ -96,12 +108,12 @@ tbody > tr > td:nth-child(3) > div {
   -ms-use-select: none;
 }
 
-.typeNum {
+.num {
   border: 1px solid rgb(168, 180, 247);
   background-color: rgb(168, 180, 247);
 }
 
-.typeString {
+.str {
   border: 1px solid rgb(249, 169, 43);
   background-color: rgb(249, 169, 43);
 }

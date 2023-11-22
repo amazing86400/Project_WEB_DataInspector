@@ -1,5 +1,5 @@
 // 최종 데이터 Array
-const events = [];
+let events = [];
 
 /*
   데이터 딕셔너리 변환 함수 정의
