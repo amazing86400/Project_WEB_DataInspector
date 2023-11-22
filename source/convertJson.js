@@ -86,7 +86,7 @@ function initializeEventData() {
   인코딩 된 한글 문자열을 디코딩 해주는 함수입니다.
 */
 function decodeUnicodeEscapes(value, dataType) {
-  if (dataType == 'string') {
+  if (dataType == 'string' && !value.includes('Error:')) {
     const decodedValue = eval(`"${value}"`);
     const koreanValue = decodeURIComponent(escape(decodedValue));
 
@@ -96,6 +96,7 @@ function decodeUnicodeEscapes(value, dataType) {
 
     return numberValue;
   }
+  return value
 }
 
 /*
@@ -106,9 +107,9 @@ function handleParam(paramSections, convertKey, eventData) {
   if (!paramSections.includes('items')) {
     // key, value 설정
     const key = paramSections.split('"')[1];
-    const value = paramSections.split('value:')[1].replaceAll('"', '').trim() || 'Error: 값이 없습니다.';
+    const value = paramSections.split('value:')[1] ? paramSections.split('value:')[1].replaceAll('"', '').trim() : 'Error: 값이 없습니다.';
 
-    const transactionKey = ['currency', 'transaction_id', 'value', 'tax', 'shipping', 'affiliation', 'coupon'];
+    const transactionKey = ['currency', 'transaction_id', 'value', 'tax', 'shipping', 'affiliation', 'coupon', 'payment_type','shipping_tier'];
 
     // 데이터 타입 설정
     const isInt = paramSections.includes('int_value');
@@ -147,7 +148,7 @@ function handleRemainData(remainSection, eventData) {
       const remainData = userProperty.split('\n  }\n')[1].split('\n  ');
       for (let k of remainData) {
         const key = k.split(':')[0].trim();
-        const value = k.split(':')[1].replace(/"/g, '').trim() || 'Error: 값이 없습니다.';
+        const value = k.split(':')[1] ? k.split(':')[1].replace(/"/g, '').trim() : 'Error: 값이 없습니다.';
         if (key !== '') {
           eventData.remainDatas[key] = value;
         }
@@ -162,7 +163,7 @@ function handleRemainData(remainSection, eventData) {
 */
 function handleUserProperty(userPropertySection, userProperties) {
   const key = userPropertySection.split('"')[1];
-  const value = userPropertySection.split('value:')[1].replaceAll('"', '').split('\n')[0].trim() || 'Error: 값이 없습니다.';
+  const value = userPropertySection.split('value:')[1] ? userPropertySection.split('value:')[1].replaceAll('"', '').split('\n')[0].trim() : 'Error: 값이 없습니다.';
 
   const isInt = userPropertySection.includes('int_value');
   const isString = userPropertySection.includes('string_value');
@@ -190,14 +191,14 @@ function handleItems(itemSection, items) {
       if (!paramSection.includes('13:')) {
         const key = paramSection.split('"')[1];
         if (paramSection.includes('2:')) {
-          const value = paramSection.split('"')[3].trim() || 'Error: 값이 없습니다.';
+          const value = paramSection.split('"')[3] ? paramSection.split('"')[3].trim() : 'Error: 값이 없습니다.';
           item[key] = decodeUnicodeEscapes(value, 'string');
         } else if (paramSection.includes('3:')) {
-          const value = paramSection.split('3:')[1].split('}')[0].trim() || 'Error: 값이 없습니다.';
+          const value = paramSection.split('3:')[1] ? paramSection.split('3:')[1].split('}')[0].trim() : 'Error: 값이 없습니다.';
           item[key] = decodeUnicodeEscapes(value, 'int');
         }
       } else {
-        const value = paramSection.split('"')[1].trim() || 'Error: 값이 없습니다.';
+        const value = paramSection.split('"')[1] ? paramSection.split('"')[1].trim() : 'Error: 값이 없습니다.';
         item['item_name'] = decodeUnicodeEscapes(value, 'string');
       }
     }

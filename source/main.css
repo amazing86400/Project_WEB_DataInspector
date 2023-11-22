@@ -125,3 +125,7 @@ tbody > tr > td:nth-child(3) > div {
 #remainThead {
   cursor: pointer;
 }
+
+.error {
+  background-color: rgb(234, 89, 86);
+}

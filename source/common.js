@@ -1,6 +1,3 @@
-const blockList = ['firebase_screen_id','_c','realtime','ga_debug','firebase_event_origin',
-'_fi','_fot','_sid','_sid','_sno','_lte','_se','items','transactions']
-
 function setData() {
   convertJson();
   viewList();
@@ -33,19 +30,7 @@ function viewEvent(no) {
   if(viewEvent.eventParams) {
     const epTbody = document.getElementById('epTbody');
     epTbody.replaceChildren()
-    for(const [key, value] of Object.entries(viewEvent.eventParams)) {
-      if(!blockList.includes(key)) {
-        const valueType = typeof(value) == 'string' ? 'str' : 'num';
-        epTbody.insertAdjacentHTML('beforeend',
-          `<tr>
-            <td>${key}</td>
-            <td>${value}</td>
-            <td>
-              <div class="${valueType}">${valueType}</div>
-            </td>
-          </tr>`)
-      }
-    }
+    insertData(viewEvent.eventParams, epTbody)
   }
 
   // 사용자 속성 출력
@@ -82,18 +67,30 @@ function viewEvent(no) {
 
 // 데이터를 HTML요소 추가해주는 함수
 function insertData(data, tbody, i) {
+  const blockList = ['firebase_screen_id','_c','realtime','ga_debug','firebase_event_origin','_fi','_fot','_sid','_sid','_sno','_lte','_se','items','transactions'];
   const isItem = i ? 'item'+(Number(i)+1)+'.' : ''
   for(const [key, value] of Object.entries(data)) {
     if(!blockList.includes(key)) {
       const valueType = typeof(value) == 'string' ? 'str' : 'num'
-      tbody.insertAdjacentHTML('beforeend',
-        `<tr>
+      if(isSearchValid(key, value, valueType)) {
+        tbody.insertAdjacentHTML('beforeend',
+          `<tr>
+            <td>${isItem}${key}</td>
+            <td>${value}</td>
+            <td>
+              <div class="${valueType}">${valueType}</div>
+            </td>
+          </tr>`)
+      } else {
+        tbody.insertAdjacentHTML('beforeend',
+        `<tr class="error">
           <td>${isItem}${key}</td>
           <td>${value}</td>
           <td>
             <div class="${valueType}">${valueType}</div>
           </td>
         </tr>`)
+      }
     }
   }
 }
@@ -107,5 +104,18 @@ function clearList() {
 
 function dropDown() {
   const remainTbody = document.getElementById('remainTbody');
-  remainTbody.classList.toggle('sum')
+  remainTbody.classList.toggle('sum');
+}
+
+function isSearchValid(key, value, type) {
+  const intValueKeys = ['tax', 'shipping', 'value', 'quantity', 'price', 'cm_', 'discount', 'index'];
+
+  switch (true) {
+    case intValueKeys.includes(key) && type === 'str':
+    case key.includes('error'):
+    case type === 'str' && value.includes('Error:'):
+      return false;
+    default:
+      return true;
+  }
 }
