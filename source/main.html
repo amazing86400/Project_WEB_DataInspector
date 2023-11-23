@@ -31,7 +31,11 @@
         <table>
           <thead>
             <tr>
-              <th colspan="3">Event Parameters</th>
+              <th colspan="2" onclick="dropDown(this);">Event Parameters</th>
+              <th class="copyTh">
+                <img src="font/copy_83918.png" onclick="copyData();">
+                <!-- <button type="button" onclick="copyData();">복사</button> -->
+              </th>
             </tr>
           </thead>
           <tbody id="epTbody">
@@ -40,7 +44,7 @@
         <table>
           <thead>
             <tr>
-              <th colspan="3">User Properties</th>
+              <th colspan="3" onclick="dropDown(this);">User Properties</th>
             </tr>
           </thead>
           <tbody id="upTbody">
@@ -49,7 +53,7 @@
         <table>
           <thead>
             <tr>
-              <th colspan="3">Transaction</th>
+              <th colspan="3" onclick="dropDown(this);">Transaction</th>
             </tr>
           </thead>
           <tbody id="transactionTbody">
@@ -58,16 +62,16 @@
         <table>
           <thead>
             <tr>
-              <th colspan="3">Items</th>
+              <th colspan="3" onclick="dropDown(this);">Items</th>
             </tr>
           </thead>
           <tbody id="itemsTbody">
           </tbody>
         </table>
         <table>
-          <thead id="remainThead" onclick="dropDown();">
+          <thead>
             <tr>
-              <th colspan="3">Remain Datas</th>
+              <th colspan="3" onclick="dropDown(this);">Remain Datas</th>
               <!-- <th>▼</th> -->
             </tr>
           </thead>

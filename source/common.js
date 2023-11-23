@@ -146,6 +146,7 @@ function createTr(key, value, valueType, tbody, isItem) {
   }
 }
 
+// 매개변수 출력 초기화 함수
 function clearTableContents() {
   const tableIds = ['epTbody', 'upTbody', 'transactionTbody', 'itemsTbody', 'remainTbody'];
 
@@ -163,9 +164,12 @@ function clearList() {
   clearTableContents();
 }
 
-function dropDown() {
-  const remainTbody = document.getElementById('remainTbody');
-  remainTbody.classList.toggle('sum');
+// 드롭다운 함수
+function dropDown(thead) {
+  const tbody = thead.parentElement.parentElement.nextElementSibling;
+  if (tbody.childElementCount > 0) {
+    tbody.classList.toggle('sum');
+  }
 }
 
 function isSearchValid(key, value, type) {
@@ -186,6 +190,28 @@ function isSearchValid(key, value, type) {
     default:
       return true;
   }
+}
+
+function copyData() {
+  const tables = ['epTbody', 'upTbody', 'transactionTbody', 'itemsTbody'];
+  const formattedText = tables.map(tableId => formatTable(document.getElementById(tableId))).join('\n\n');
+  copyTextToClipboard(formattedText);
+}
+
+function formatTable(table) {
+  return Array.from(table.rows)
+    .map(row => Array.from(row.cells).filter((_, index) => index !== 2).map(cell => cell.textContent).join('\t'))
+    .join('\n');
+}
+
+function copyTextToClipboard(text) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+  alert('클립보드에 복사되었습니다.');
 }
 
 // 페이지 새로고침시 alert창 출력해주는 함수

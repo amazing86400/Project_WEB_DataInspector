@@ -49,6 +49,10 @@ button {
   margin: 300px 20px 0px 20px;
 }
 
+img {
+  width: 20px;
+}
+
 .clearBtn {
   margin-top: 20px;
 }
@@ -107,10 +111,17 @@ table {
 
 thead {
   height: 33px;
+  cursor: pointer;
+}
+
+.copyTh {
+  width: 20px;
+  border-left: none;
 }
 
 thead > tr > th {
   background: rgb(238,240,243);
+  border-right: none;
   text-align: left;
   padding-left: 25px;
   padding: 3px 13px;
@@ -169,10 +180,6 @@ tbody > tr > td:nth-child(3) > div {
 
 .sum {
   display: none;
-}
-
-#remainThead {
-  cursor: pointer;
 }
 
 .error {
