@@ -63,47 +63,46 @@ function viewEvent(no) {
 
 // 데이터를 HTML요소 추가해주는 함수
 function insertData(data, tbody, i) {
-  const blockList = ['firebase_screen_id','_c','realtime','ga_debug','firebase_event_origin','_fi','_fot','_sid','_sid','_sno','_lte','_se','items','transactions'];
+  const blockList = ['firebase_screen_id','_c','realtime','ga_debug','firebase_event_origin','_fi','_fot','_sid','_sid','_sno','_lte','_se','items','transactions','firebase_screen_name','firebase_screen_class'];
   const isItem = i ? 'item'+(Number(i)+1)+'.' : ''
+  if (tbody == document.getElementById('epTbody')) {
+    const screenNameValue = data.firebase_screen_name ? data.firebase_screen_name : 'Error: 값이 없습니다.'
+    const screenNameValueType = typeof(screenNameValue) == 'string' ? 'str' : 'num'
+    createTr('firebase_screen_name',screenNameValue, screenNameValueType, tbody, isItem)
+    const screenClassValue = data.firebase_screen_class ? data.firebase_screen_class : 'Error: 값이 없습니다.'
+    const screenClassValueType = typeof(screenClassValue) == 'string' ? 'str' : 'num'
+    createTr('firebase_screen_class',screenClassValue, screenClassValueType, tbody, isItem)
+  }
+
   for(const [key, value] of Object.entries(data)) {
     if(!blockList.includes(key)) {
       const valueType = typeof(value) == 'string' ? 'str' : 'num'
-      if(isSearchValid(key, value, valueType)) {
-        tbody.insertAdjacentHTML('beforeend',
-          `<tr>
-            <td>${isItem}${key}</td>
-            <td>${value}</td>
-            <td>
-              <div class="${valueType}">${valueType}</div>
-            </td>
-          </tr>`)
-      } else {
-        tbody.insertAdjacentHTML('beforeend',
-        `<tr class="error">
-          <td>${isItem}${key}</td>
-          <td>${value}</td>
-          <td>
-            <div class="${valueType}">${valueType}</div>
-          </td>
-        </tr>`)
-      }
+      createTr(key, value, valueType, tbody, isItem)
     }
   }
 }
 
-// function deleteList() {
-//   const epTbody = document.getElementById('epTbody');
-//   const upTbody = document.getElementById('upTbody');
-//   const transactionTbody = document.getElementById('transactionTbody');
-//   const itemsTbody = document.getElementById('itemsTbody');
-//   const remainTbody = document.getElementById('remainTbody');
-
-//   epTbody.replaceChildren();
-//   upTbody.replaceChildren();
-//   transactionTbody.replaceChildren();
-//   itemsTbody.replaceChildren();
-//   remainTbody.replaceChildren();
-// }
+function createTr(key, value, valueType, tbody, isItem) {
+  if(isSearchValid(key, value, valueType)) {
+    tbody.insertAdjacentHTML('beforeend',
+      `<tr>
+        <td>${isItem}${key}</td>
+        <td>${value}</td>
+        <td>
+          <div class="${valueType}">${valueType}</div>
+        </td>
+      </tr>`)
+  } else {
+    tbody.insertAdjacentHTML('beforeend',
+    `<tr class="error">
+      <td>${isItem}${key}</td>
+      <td>${value}</td>
+      <td>
+        <div class="${valueType}">${valueType}</div>
+      </td>
+    </tr>`)
+  }
+}
 
 function clearTableContents() {
   const tableIds = ['epTbody', 'upTbody', 'transactionTbody', 'itemsTbody', 'remainTbody'];
