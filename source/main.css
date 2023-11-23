@@ -155,5 +155,10 @@ tbody > tr > td:nth-child(3) > div {
 }
 
 .error {
-  background-color: rgb(234, 89, 86);
+  /* background-color: rgb(234, 89, 86); */
+  background-color: #EC8F5E;
+}
+
+.selected {
+  background-color: #9FBB73;
 }

@@ -17,7 +17,7 @@ function viewList() {
 
     eventTag.insertAdjacentHTML(
       'beforeend',
-      `<div class="eventSummary" onclick="viewEvent(${i})">
+      `<div class="eventSummary" onclick="viewEvent(${i},this)">
         <div class="evnetNo">${Number(i) + 1}</div>
         <div class="eventName">${events[i].eventName}</div>
         <div class="time">${formattedDate}</div>
@@ -27,7 +27,7 @@ function viewList() {
 }
 
 // 발생한 이벤트 데이터 출력해주는 함수
-function viewEvent(no) {
+function viewEvent(no, clickDiv) {
   const viewEvent = events[no];
   clearTableContents();
   if (viewEvent.eventParams) {
@@ -61,6 +61,12 @@ function viewEvent(no) {
     const remainTbody = document.getElementById('remainTbody');
     insertData(viewEvent.remainDatas, remainTbody);
   }
+
+  // 클릭 시 배경색 입히기
+  const divs = document.querySelectorAll('.eventSummary');
+  divs.forEach(div => div.classList.remove('selected'));
+
+  clickDiv.classList.add('selected');
 }
 
 // 데이터를 HTML요소 추가해주는 함수
