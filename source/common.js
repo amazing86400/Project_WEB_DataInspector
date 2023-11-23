@@ -12,9 +12,7 @@ function viewList() {
   eventTag.replaceChildren();
   for (i in events) {
     const timestamp = Number(events[i].remainDatas.start_timestamp_millis);
-    const date = new Date(timestamp);
-    const formattedDate = date.toISOString().replace('T', ' ').substring(0, 19);
-
+    const formattedDate = timestamp ? new Date(timestamp).toISOString().replace('T', ' ').substring(0, 19) : '';
     eventTag.insertAdjacentHTML(
       'beforeend',
       `<div class="eventSummary" onclick="viewEvent(${i},this)">

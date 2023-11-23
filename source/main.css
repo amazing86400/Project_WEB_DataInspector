@@ -4,15 +4,24 @@
 }
 
 .header {
+  display: flex;
+}
 
+.firebase, .gtm {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  border: 1px solid rgb(210,213,218);
+  border-radius: 5px 5px 0px 0px;
+  justify-content: center;
 }
 
 .firebase {
-
+  width: 140px;
 }
 
 .gtm {
-  
+  width: 190px;
 }
 
 .container {
