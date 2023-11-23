@@ -62,14 +62,14 @@ function viewEvent(no, clickDiv) {
 
   // 클릭 시 배경색 입히기
   const divs = document.querySelectorAll('.eventSummary');
-  divs.forEach(div => div.classList.remove('selected'));
+  divs.forEach((div) => div.classList.remove('selected'));
 
   clickDiv.classList.add('selected');
 }
 
 // 데이터를 HTML요소 추가해주는 함수
 function insertData(data, tbody, i) {
-  const blockList = ['firebase_screen_id', '_c', 'realtime', 'ga_debug', 'firebase_event_origin', '_fi', '_fot', '_sid', '_sid', '_sno', '_lte', '_se', 'items', 'transactions', 'firebase_screen_name', 'firebase_screen_class','engagement_time_msec','_ltv_KRW','_mst'];
+  const blockList = ['firebase_screen_id', '_c', 'realtime', 'ga_debug', 'firebase_event_origin', '_fi', '_fot', '_sid', '_sid', '_sno', '_lte', '_se', 'items', 'transactions', 'firebase_screen_name', 'firebase_screen_class', 'engagement_time_msec', '_ltv_KRW', '_mst'];
   const isItem = i ? 'item' + (Number(i) + 1) + '.' : '';
 
   // 화면 정보 설정(screen_name/screen_class)
@@ -88,15 +88,15 @@ function insertData(data, tbody, i) {
   // 상품 정보 설정
   if (tbody == document.getElementById('itemsTbody')) {
     let item = { ...data };
-    const itemList = ['item_id', 'item_name', 'item_brand', 'item_category', 'item_category2', 'item_category3', 'item_category4', 'item_category5', 'item_variant', 'price', 'quantity', 'currency', 'index', 'affiliation', 'coupon', 'discount', 'item_list_id', 'item_list_name', 'location_id'];
+    const itemList = ['item_id', 'item_name', 'item_brand', 'item_category', 'item_category2', 'item_category3', 'item_category4', 'item_category5', 'item_variant', 'price', 'quantity', 'coupon', 'discount', 'item_list_id', 'item_list_name', 'index', 'location_id', 'affiliation', 'currency'];
 
     // item 추천 항목 설정
-    for (let field of itemList) {
-      if (item[field]) {
-        const value = item[field];
+    for (let key of itemList) {
+      if (item[key]) {
+        const value = item[key];
         const valueType = typeof value == 'string' ? 'str' : 'num';
-        createTr(field, value, valueType, tbody, isItem);
-        delete item[field];
+        createTr(key, value, valueType, tbody, isItem);
+        delete item[key];
       }
     }
 
@@ -108,11 +108,19 @@ function insertData(data, tbody, i) {
         createTr(key, value, valueType, tbody, isItem);
       }
     }
-
-    // 이 외 데이터 설정
+  } else if (tbody == document.getElementById('transactionTbody')) {
+    const transactionList = ['currency', 'value', 'transaction_id', 'shipping', 'tax', 'coupon', 'payment_type', 'shipping_tier', 'affiliation'];
+    for (let key of transactionList) {
+      if (data[key]) {
+        const value = data[key];
+        const valueType = typeof value == 'string' ? 'str' : 'num';
+        createTr(key, value, valueType, tbody, isItem);
+      }
+    }
   } else {
-    for (const [key, value] of Object.entries(data)) {
+    for (const key in data) {
       if (!blockList.includes(key)) {
+        const value = data[key];
         const valueType = typeof value == 'string' ? 'str' : 'num';
         createTr(key, value, valueType, tbody, isItem);
       }
@@ -174,7 +182,7 @@ function dropDown(thead) {
 
 function isSearchValid(key, value, type) {
   const intValueKeys = ['tax', 'shipping', 'value', 'quantity', 'price', 'discount', 'index'];
-  const stringValueKeys = ['screen_name', 'screen_class'];
+  const stringValueKeys = ['screen_name', 'screen_class', 'currency', 'transaction_id', 'coupon', 'payment_type', 'shipping_tier', 'affiliation'];
 
   switch (true) {
     case key.includes('item_') && type === 'num':
@@ -194,25 +202,33 @@ function isSearchValid(key, value, type) {
 
 function copyData() {
   const tables = ['epTbody', 'upTbody', 'transactionTbody', 'itemsTbody'];
-  const formattedText = tables.map(tableId => {
-    const table = document.getElementById(tableId);
-    if (table && table.children.length > 0) {
-      return formatTable(table);
-    } else {
-      return null;
-    }
-  }).filter(formatted => formatted !== null).join('\n\n');
+  const formattedText = tables
+    .map((tableId) => {
+      const table = document.getElementById(tableId);
+      if (table && table.children.length > 0) {
+        return formatTable(table);
+      } else {
+        return null;
+      }
+    })
+    .filter((formatted) => formatted !== null)
+    .join('\n\n');
 
   if (formattedText == '') {
-    alert('복사할 데이터가 없습니다.')
-    return false
+    alert('복사할 데이터가 없습니다.');
+    return false;
   }
   copyTextToClipboard(formattedText);
 }
 
 function formatTable(table) {
   return Array.from(table.rows)
-    .map(row => Array.from(row.cells).filter((_, index) => index !== 2).map(cell => cell.textContent).join('\t'))
+    .map((row) =>
+      Array.from(row.cells)
+        .filter((_, index) => index !== 2)
+        .map((cell) => cell.textContent)
+        .join('\t')
+    )
     .join('\n');
 }
 
