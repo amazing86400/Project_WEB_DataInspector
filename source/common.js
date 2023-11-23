@@ -141,6 +141,9 @@ function createTr(key, value, valueType, tbody, isItem) {
       </tr>`
     );
   } else {
+    if (key == 'error_code') {
+      value = errorMessage(value);
+    }
     tbody.insertAdjacentHTML(
       'beforeend',
       `<tr class="error">
@@ -240,6 +243,38 @@ function copyTextToClipboard(text) {
   document.execCommand('copy');
   document.body.removeChild(textarea);
   alert('클립보드에 복사되었습니다.');
+}
+
+// 에러 메시지 정의 함수
+function errorMessage(errorCode) {
+  const convertError = {
+    2: '이벤트 이름이 잘못되었습니다.',
+    3: '이벤트 매개변수 이름이 잘못되었습니다.',
+    4: '이벤트 매개변수 값이 너무 깁니다.',
+    5: '이벤트 매개변수가 25개를 넘습니다.',
+    6: '사용자 속성 이름이 잘못되었습니다.',
+    7: '사용자 속성 값이 너무 깁니다.',
+    8: '앱 인스턴스가 기록하는 고유 이벤트 유형이 500개를 넘습니다.',
+    9: '앱 인스턴스가 설정하는 고유 사용자 속성이 25개를 넘습니다.',
+    10: '앱 인스턴스의 전환 이벤트 일일 한도를 초과하였습니다.',
+    11: '앱 인스턴스가 블랙리스트에 포함된 이벤트를 기록했습니다.',
+    12: '앱 인스턴스가 블랙리스트에 포함된 사용자 속성을 설정했습니다.',
+    13: '예약된 이벤트 이름입니다.',
+    14: '예약된 매개변수 이름입니다.',
+    15: '예약된 사용자 속성 이름입니다.',
+    17: '매개변수 배열 길이가 한도(200)를 초과했습니다.',
+    18: '값 매개변수 유형이 잘못되었습니다.',
+    19: '전환 이벤트의 통화 매개변수가 누락되었습니다.',
+    20: '이벤트 배열 매개변수 이름이 잘못되었습니다.',
+    21: '이벤트가 배열 매개변수를 지원하지 않습니다.',
+    22: '항목에 배열 기반 매개변수를 포함할 수 없습니다.',
+    23: '항목에 맞춤 매개변수를 포함할 수 없습니다.',
+    25: '항목 배열이 Google Play 서비스의 클라이언트 버전에서 지원되지 않습니다(Android만 해당).',
+    28: '항목의 맞춤 매개변수가 27개를 초과합니다.',
+  };
+  const value = errorCode + ': ' + convertError[errorCode] || errorCode;
+
+  return value;
 }
 
 // 페이지 새로고침시 alert창 출력해주는 함수
