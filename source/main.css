@@ -3,6 +3,10 @@
   src: url(font/NotoSansKR-VariableFont_wght.ttf);
 }
 
+* {
+  /* background-color: rgb(242, 245, 249); */
+}
+
 .header {
   display: flex;
 }
