@@ -3,6 +3,18 @@
   src: url(font/NotoSansKR-VariableFont_wght.ttf);
 }
 
+.header {
+
+}
+
+.firebase {
+
+}
+
+.gtm {
+  
+}
+
 .container {
   display: flex;
   align-items: flex-start;

@@ -71,7 +71,7 @@ function viewEvent(no, clickDiv) {
 
 // 데이터를 HTML요소 추가해주는 함수
 function insertData(data, tbody, i) {
-  const blockList = ['firebase_screen_id', '_c', 'realtime', 'ga_debug', 'firebase_event_origin', '_fi', '_fot', '_sid', '_sid', '_sno', '_lte', '_se', 'items', 'transactions', 'firebase_screen_name', 'firebase_screen_class'];
+  const blockList = ['firebase_screen_id', '_c', 'realtime', 'ga_debug', 'firebase_event_origin', '_fi', '_fot', '_sid', '_sid', '_sno', '_lte', '_se', 'items', 'transactions', 'firebase_screen_name', 'firebase_screen_class','engagement_time_msec','_ltv_KRW','_mst'];
   const isItem = i ? 'item' + (Number(i) + 1) + '.' : '';
 
   // 화면 정보 설정(screen_name/screen_class)
@@ -96,7 +96,7 @@ function insertData(data, tbody, i) {
     for (let field of itemList) {
       if (item[field]) {
         const value = item[field];
-        const valueType = typeof itemValue == 'string' ? 'str' : 'num';
+        const valueType = typeof value == 'string' ? 'str' : 'num';
         createTr(field, value, valueType, tbody, isItem);
         delete item[field];
       }
@@ -162,6 +162,7 @@ function clearList() {
   const eventList = document.getElementById('eventList');
   events = [];
   eventList.replaceChildren();
+  clearTableContents();
 }
 
 function dropDown() {
@@ -170,9 +171,11 @@ function dropDown() {
 }
 
 function isSearchValid(key, value, type) {
-  const intValueKeys = ['tax', 'shipping', 'value', 'quantity', 'price', 'cm_', 'discount', 'index'];
+  const intValueKeys = ['tax', 'shipping', 'value', 'quantity', 'price', 'discount', 'index'];
 
   switch (true) {
+    case key.includes('metric') && type === 'str':
+    case key.includes('cm_') && type === 'str':
     case intValueKeys.includes(key) && type === 'str':
     case key.includes('error'):
     case type === 'str' && value.includes('Error:'):
@@ -181,3 +184,10 @@ function isSearchValid(key, value, type) {
       return true;
   }
 }
+
+// 페이지 새로고침시 alert창 출력해주는 함수
+// window.onbeforeunload = function (e) {
+//   let dialogText = 'Dialog text here';
+//   e.returnValue = dialogText;
+//   return dialogText;
+// };
