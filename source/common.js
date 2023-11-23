@@ -170,8 +170,13 @@ function dropDown() {
 
 function isSearchValid(key, value, type) {
   const intValueKeys = ['tax', 'shipping', 'value', 'quantity', 'price', 'discount', 'index'];
+  const stringValueKeys = ['screen_name', 'screen_class'];
 
   switch (true) {
+    case key.includes('item_') && type === 'num':
+    case key.includes('dimension') && type === 'num':
+    case key.includes('ep_') && type === 'num':
+    case stringValueKeys.includes(key) && type === 'num':
     case key.includes('metric') && type === 'str':
     case key.includes('cm_') && type === 'str':
     case intValueKeys.includes(key) && type === 'str':
