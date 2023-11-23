@@ -194,7 +194,19 @@ function isSearchValid(key, value, type) {
 
 function copyData() {
   const tables = ['epTbody', 'upTbody', 'transactionTbody', 'itemsTbody'];
-  const formattedText = tables.map(tableId => formatTable(document.getElementById(tableId))).join('\n\n');
+  const formattedText = tables.map(tableId => {
+    const table = document.getElementById(tableId);
+    if (table && table.children.length > 0) {
+      return formatTable(table);
+    } else {
+      return null;
+    }
+  }).filter(formatted => formatted !== null).join('\n\n');
+
+  if (formattedText == '') {
+    alert('복사할 데이터가 없습니다.')
+    return false
+  }
   copyTextToClipboard(formattedText);
 }
 

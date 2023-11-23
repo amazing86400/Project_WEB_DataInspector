@@ -16,15 +16,41 @@
   justify-content: center;
 }
 
+a {
+  text-decoration-line: none;
+}
+
 .firebase {
-  width: 140px;
+  width: 160px;
+  color: rgb(86,90,232);
+  font-family: 'Noto';
+  font-size: 15px;
+  font-weight: 500;
+  padding-right: 9px;
+  background-color: rgb(238,240,243);
+}
+
+.firebaseImg {
+  width: 24px;
+  margin: 0px 5px;
+}
+
+.gtmImg {
+  width: 30px;
+  margin: 0px 5px;
 }
 
 .gtm {
   width: 190px;
+  font-family: 'Noto';
+  font-size: 15px;
+  font-weight: 400;
+  padding-right: 9px;
+  color: rgb(59,68,81);
 }
 
 .container {
+  margin-top: 5px;
   display: flex;
   align-items: flex-start;
 }
@@ -49,7 +75,7 @@ button {
   margin: 300px 20px 0px 20px;
 }
 
-img {
+.copyImg {
   width: 20px;
 }
 
@@ -116,6 +142,8 @@ thead {
 
 .copyTh {
   width: 20px;
+  padding-top: 4px;
+  padding-bottom: 0px;
   border-left: none;
 }
 
