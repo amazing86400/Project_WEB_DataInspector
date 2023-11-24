@@ -18,72 +18,79 @@
     <div class="header">
       <a href="http://210.114.9.23/GA_part/shhong/workspace/TechProject/Project_DataInspector/source/main.html">
         <div class="firebase">
-          <img class="firebaseImg" src="font/firebaseLogo.png">Firebase (GA4)
+          <img class="firebaseImg" src="asset/firebaseLogo.png">Firebase (GA4)
         </div>
       </a>
       <a href="http://210.114.9.23/GA_part/shhong/workspace/TechProject/GTMgenerator/source/main.html">
         <div class="gtm">
-          <img class="gtmImg" src="font/gtmLogo.png">Google Tag Manager</div>
+          <img class="gtmImg" src="asset/gtmLogo.png">Google Tag Manager</div>
       </a>
+      <div class="line"></div>
     </div>
     <div class="container">
-      <textarea id="inputBox" placeholder="데이터 붙여넣기"></textarea>
-      <button class="convertBtn" type="button" disabled onclick="setData();">Convert</button>
-      <div>
-        <!-- <div class="eventList">Event List</div> -->
-        <div class="eventList" id="eventList"></div>
-        <div class="buttonField"><button class="clearBtn" type="button" onclick="clearList();">Clear</button></div>
-      </div>
-      <div class="tableField">
-        <table>
-          <thead>
-            <tr>
-              <th colspan="2" onclick="dropDown(this);">Event Parameters</th>
-              <th class="copyTh">
-                <img class="copyImg" src="font/copy_83918.png" onclick="copyData();">
-              </th>
-            </tr>
-          </thead>
-          <tbody id="epTbody">
-          </tbody>
-        </table>
-        <table>
-          <thead>
-            <tr>
-              <th colspan="3" onclick="dropDown(this);">User Properties</th>
-            </tr>
-          </thead>
-          <tbody id="upTbody">
-          </tbody>
-        </table>
-        <table>
-          <thead>
-            <tr>
-              <th colspan="3" onclick="dropDown(this);">Transaction</th>
-            </tr>
-          </thead>
-          <tbody id="transactionTbody">
-          </tbody>
-        </table>
-        <table>
-          <thead>
-            <tr>
-              <th colspan="3" onclick="dropDown(this);">Items</th>
-            </tr>
-          </thead>
-          <tbody id="itemsTbody">
-          </tbody>
-        </table>
-        <table>
-          <thead>
-            <tr>
-              <th colspan="3" onclick="dropDown(this);">Remain Datas</th>
-              <!-- <th>▼</th> -->
-            </tr>
-          </thead>
-          <tbody id="remainTbody" class="remainTbody sum">
-          </tbody>
-        </table>
+      <div class="subContainer">
+        <textarea id="inputBox" placeholder="데이터 붙여넣기"></textarea>
+        <button class="convertBtn" type="button" disabled onclick="setData();">Convert</button>
+        <div>
+          <!-- <div class="eventList">Event List</div> -->
+          <div class="eventListHeader">Fired Events
+            <img class="trashImg" src="asset/trash.png" onclick="clearList();">
+          </div>
+          <div class="eventList" id="eventList">
+          </div>
+        </div>
+        <div class="tableField">
+          <table>
+            <thead>
+              <tr>
+                <th colspan="2" onclick="dropDown(this);">Event Parameters</th>
+                <th class="copyTh">
+                  <img class="copyImg" src="asset/copy.png" onclick="copyData();">
+                </th>
+              </tr>
+            </thead>
+            <tbody id="epTbody">
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr>
+                <th colspan="3" onclick="dropDown(this);">User Properties</th>
+              </tr>
+            </thead>
+            <tbody id="upTbody">
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr>
+                <th colspan="3" onclick="dropDown(this);">Transaction</th>
+              </tr>
+            </thead>
+            <tbody id="transactionTbody">
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr>
+                <th colspan="3" onclick="dropDown(this);">Items</th>
+              </tr>
+            </thead>
+            <tbody id="itemsTbody">
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr>
+                <th colspan="3" onclick="dropDown(this);">Remain Datas</th>
+                <!-- <th>▼</th> -->
+              </tr>
+            </thead>
+            <tbody id="remainTbody" class="remainTbody sum">
+            </tbody>
+          </table>
+        </div>
+        
       </div>
     </div>
     <script>

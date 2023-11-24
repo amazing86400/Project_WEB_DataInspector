@@ -13,7 +13,8 @@ function convertJson() {
       _s: 'session_start',
       _e: 'user_engagement',
       _vs: 'screen_view',
-      _ab: 'app_update',
+      _ab: 'app_background',
+      _au: 'app_update',
 
       // 매개변수
       _si: 'firebase_screen_id',

@@ -13,14 +13,26 @@ function viewList() {
   for (i in events) {
     const timestamp = Number(events[i].remainDatas.start_timestamp_millis);
     const formattedDate = timestamp ? new Date(timestamp).toISOString().replace('T', ' ').substring(0, 19) : '';
-    eventTag.insertAdjacentHTML(
-      'beforeend',
-      `<div class="eventSummary" onclick="viewEvent(${i},this)">
-        <div class="evnetNo">${Number(i) + 1}</div>
-        <div class="eventName">${events[i].eventName}</div>
-        <div class="time">${formattedDate}</div>
-      </div>`
-    );
+    if (events[i].eventParams.error_code) {
+      const eventName = events[i].eventName == 'error_code' ? 'firebase_error' : events[i].eventName;
+      eventTag.insertAdjacentHTML(
+        'beforeend',
+        `<div class="eventSummary error"  onclick="viewEvent(${i},this)">
+          <div class="evnetNo">${Number(i) + 1}</div>
+          <div class="eventName">${eventName}</div>
+          <div class="time">${formattedDate}</div>
+        </div>`
+      );
+    } else {
+      eventTag.insertAdjacentHTML(
+        'beforeend',
+        `<div class="eventSummary" onclick="viewEvent(${i},this)">
+          <div class="evnetNo">${Number(i) + 1}</div>
+          <div class="eventName">${events[i].eventName}</div>
+          <div class="time">${formattedDate}</div>
+        </div>`
+      );
+    }
   }
 }
 
