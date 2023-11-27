@@ -102,6 +102,10 @@ button {
   background-color: rgb(249, 169, 43);
 }
 
+img {
+  user-select: none;
+}
+
 .convertBtn {
   margin: 300px 20px 0px 20px;
 }
