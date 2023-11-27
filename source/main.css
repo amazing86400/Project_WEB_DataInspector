@@ -162,11 +162,13 @@ button {
 .eventSummary {
   cursor: pointer;
   border: 1px solid rgb(210,213,218);
-    /* height: 30px; */
+  line-height: 15px;
+  height: 30px;
   font-family: 'Noto';
   font-size: 14px;
   font-weight: 400;
-  border-radius: 3px;
+  border-radius: 4px;
+  margin-top: 1px;
   background-color: white;
 }
 
@@ -320,4 +322,13 @@ tbody > tr > td:nth-child(3) > div {
 .selected {
   background-color: #9FBB73;
   color: #000000;
+}
+
+@media (min-width: 1500px) {
+  .eventList {
+    width: 500px;
+  }
+  table {
+    width: 700px;
+  }
 }
