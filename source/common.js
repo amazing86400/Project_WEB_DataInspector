@@ -184,11 +184,17 @@ function createTr(key, value, valueType, tbody, isItem) {
 // 매개변수 출력 초기화 함수
 function clearTableContents() {
   const tableIds = ['epTbody', 'upTbody', 'transactionTbody', 'itemsTbody', 'remainTbody'];
+  const imgIds = ['upImg', 'transImg', 'itemImg', 'remainImg'];
 
   tableIds.forEach((tableId) => {
     const tbody = document.getElementById(tableId);
     tbody.replaceChildren();
   });
+
+  imgIds.forEach((imgId)=> {
+    const img = document.getElementById(imgId);
+    img.className = '';
+  })
 }
 
 // 이벤트 리스트 초기화 함수
@@ -206,7 +212,7 @@ function dropDown(thead) {
   if (tbody.childElementCount > 0) {
     tbody.classList.toggle('sum');
   }
-  img.classList.toggle('up')
+  img.classList.toggle('up');
 }
 
 function isSearchValid(key, value, type) {

@@ -170,6 +170,10 @@ button {
   background-color: white;
 }
 
+.eventSummary:hover:not(.error, .selected) {
+  background-color: rgb(242, 244, 246);
+}
+
 .evnetNo {
   width: 20px;
   margin: 5px;
