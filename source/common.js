@@ -2,8 +2,10 @@ function setData() {
   convertJson();
   viewList();
   const textArea = document.getElementById('inputBox');
+  const copyClass = document.querySelector('.copyImg');
   textArea.value = '';
   convertBtn.disabled = true;
+  copyClass.className = 'copyImg'
 }
 
 // 변환 후 이벤트 리스트를 출력해주는 함수
@@ -38,6 +40,7 @@ function viewList() {
 
 // 발생한 이벤트 데이터 출력해주는 함수
 function viewEvent(no, clickDiv) {
+  const copyClass = document.querySelector('.copyImg');
   const viewEvent = events[no];
   clearTableContents();
   if (viewEvent.eventParams) {
@@ -48,28 +51,36 @@ function viewEvent(no, clickDiv) {
   // 사용자 속성 출력
   if (viewEvent.userProperties) {
     const upTbody = document.getElementById('upTbody');
+    const upImg = document.getElementById('upImg');
     insertData(viewEvent.userProperties, upTbody);
+    upImg.className = 'dropDown';
   }
 
   // 거래 데이터 출력
   if (viewEvent.eventParams.transactions) {
     const transactionTbody = document.getElementById('transactionTbody');
+    const transImg = document.getElementById('transImg');
     insertData(viewEvent.eventParams.transactions, transactionTbody);
+    transImg.className = 'dropDown';
   }
 
   // 상품 데이터 출력
   if (viewEvent.eventParams.items) {
     const items = viewEvent.eventParams.items;
+    const itemImg = document.getElementById('itemImg');
     const itemsTbody = document.getElementById('itemsTbody');
     for (i in items) {
       insertData(items[i], itemsTbody, i);
     }
+    itemImg.className = 'dropDown';
   }
 
   // 기타 데이터 출력
   if (viewEvent.remainDatas) {
     const remainTbody = document.getElementById('remainTbody');
+    const remainImg = document.getElementById('remainImg');
     insertData(viewEvent.remainDatas, remainTbody);
+    remainImg.className = 'dropDown up';
   }
 
   // 클릭 시 배경색 입히기
@@ -77,6 +88,7 @@ function viewEvent(no, clickDiv) {
   divs.forEach((div) => div.classList.remove('selected'));
 
   clickDiv.classList.add('selected');
+  copyClass.className = 'copyImg'
 }
 
 // 데이터를 HTML요소 추가해주는 함수
@@ -190,9 +202,11 @@ function clearList() {
 // 드롭다운 함수
 function dropDown(thead) {
   const tbody = thead.parentElement.parentElement.nextElementSibling;
+  const img = thead.children[0] ? thead.children[0] : thead.nextElementSibling.children[0]
   if (tbody.childElementCount > 0) {
     tbody.classList.toggle('sum');
   }
+  img.classList.toggle('up')
 }
 
 function isSearchValid(key, value, type) {
@@ -249,12 +263,14 @@ function formatTable(table) {
 
 function copyTextToClipboard(text) {
   const textarea = document.createElement('textarea');
+  const img = document.querySelector('.copyImg')
   textarea.value = text;
   document.body.appendChild(textarea);
   textarea.select();
   document.execCommand('copy');
   document.body.removeChild(textarea);
-  alert('클립보드에 복사되었습니다.');
+  img.classList.add('check');
+  // alert('클립보드에 복사되었습니다.');
 }
 
 // 에러 메시지 정의 함수

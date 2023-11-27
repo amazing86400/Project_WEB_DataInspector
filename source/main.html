@@ -34,61 +34,82 @@
         <div>
           <!-- <div class="eventList">Event List</div> -->
           <div class="eventListHeader">Fired Events
-            <img class="trashImg" src="asset/trash.png" onclick="clearList();">
+            <img class="trashImg" src="asset/trash3.png" onclick="clearList();">
           </div>
           <div class="eventList" id="eventList">
           </div>
         </div>
         <div class="tableField">
-          <table>
-            <thead>
-              <tr>
-                <th colspan="2" onclick="dropDown(this);">Event Parameters</th>
-                <th class="copyTh">
-                  <img class="copyImg" src="asset/copy.png" onclick="copyData();">
-                </th>
-              </tr>
-            </thead>
-            <tbody id="epTbody">
-            </tbody>
-          </table>
-          <table>
-            <thead>
-              <tr>
-                <th colspan="3" onclick="dropDown(this);">User Properties</th>
-              </tr>
-            </thead>
-            <tbody id="upTbody">
-            </tbody>
-          </table>
-          <table>
-            <thead>
-              <tr>
-                <th colspan="3" onclick="dropDown(this);">Transaction</th>
-              </tr>
-            </thead>
-            <tbody id="transactionTbody">
-            </tbody>
-          </table>
-          <table>
-            <thead>
-              <tr>
-                <th colspan="3" onclick="dropDown(this);">Items</th>
-              </tr>
-            </thead>
-            <tbody id="itemsTbody">
-            </tbody>
-          </table>
-          <table>
-            <thead>
-              <tr>
-                <th colspan="3" onclick="dropDown(this);">Remain Datas</th>
-                <!-- <th>▼</th> -->
-              </tr>
-            </thead>
-            <tbody id="remainTbody" class="remainTbody sum">
-            </tbody>
-          </table>
+          <div class="tableDiv">
+            <table>
+              <thead>
+                <tr>
+                  <th colspan="2" onclick="dropDown(this);">Event Parameters</th>
+                  <th class="copyTh">
+                    <img class="copyImg" onclick="copyData();">
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="epTbody">
+              </tbody>
+            </table>
+          </div>
+          <div class="tableDiv">
+            <table>
+              <thead>
+                <tr>
+                  <th colspan="2" onclick="dropDown(this);">User Properties</th>
+                  <th class="copyTh" onclick="dropDown(this);">
+                    <img id="upImg">
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="upTbody">
+              </tbody>
+            </table>
+          </div>
+          <div class="tableDiv">
+            <table>
+              <thead>
+                <tr>
+                  <th colspan="2" onclick="dropDown(this);">Transaction</th>
+                  <th class="copyTh" onclick="dropDown(this);">
+                    <img id="transImg">
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="transactionTbody">
+              </tbody>
+            </table>
+          </div>
+          <div class="tableDiv">
+            <table>
+              <thead>
+                <tr>
+                  <th colspan="2" onclick="dropDown(this);">Items</th>
+                  <th class="copyTh" onclick="dropDown(this);">
+                    <img id="itemImg">
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="itemsTbody">
+              </tbody>
+            </table>
+          </div>
+          <div class="tableDiv">
+            <table>
+              <thead>
+                <tr>
+                  <th colspan="2" onclick="dropDown(this);">Remain Datas</th>
+                  <th class="copyTh" onclick="dropDown(this);">
+                    <img id="remainImg">
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="remainTbody" class="remainTbody sum">
+              </tbody>
+            </table>
+          </div>
         </div>
         
       </div>

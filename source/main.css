@@ -108,6 +108,23 @@ button {
 
 .copyImg {
   width: 20px;
+  content: url(asset/copy.png);
+  /* background-size: 100%; */
+}
+
+.check {
+  width: 20px;
+  content: url(asset/checkmark.png);
+}
+
+.dropDown {
+  width: 20px;
+  content: url(asset/up-arrow.png);
+  transform: inherit;
+}
+
+.up {
+  transform: scaleY(-1);
 }
 
 .trashImg {
@@ -130,7 +147,7 @@ button {
     font-family: 'Noto';
     font-size: 14px;
     font-weight: 600;
-    border-radius: 3px;
+    border-radius: 5px;
     background-color: rgb(227 232 239);
     border: 1px solid rgb(218 222 228);
     padding: 6px 0px 6px 10px;
@@ -179,6 +196,13 @@ button {
   margin: 0px 20px 20px 30px;
 }
 
+.tableDiv {
+  border: 1px solid rgb(218 222 228);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
 table {
   width: 600px;
   word-break:break-all;
@@ -212,8 +236,16 @@ thead > tr > th {
 
 thead, td, th {
   font-family: 'Noto';
-  border: 1px solid rgb(218 222 228);
+  /* border: 1px solid rgb(218 222 228); */
   padding-left: 7px;
+}
+
+tr {
+  border-bottom: 1px solid rgb(218 222 228);
+}
+
+tbody > tr:last-child {
+  border-bottom: none;
 }
 
 tbody > tr > td:first-child {
@@ -221,6 +253,7 @@ tbody > tr > td:first-child {
   font-family: 'Noto';
   font-weight: 500;
   font-size: 13px;
+  border-right: 1px solid rgb(218 222 228);
 }
 
 tbody > tr > td:nth-child(2) {
@@ -231,6 +264,7 @@ tbody > tr > td:nth-child(2) {
   font-size: 12.5px;
   font-weight: 400;
   color: rgb(59,68,81);
+  padding: 4px 7px;
 }
 
 tbody > tr > td:nth-child(3) {
