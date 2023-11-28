@@ -53,7 +53,7 @@ function viewEvent(no, clickDiv) {
   }
 
   // 사용자 속성 출력
-  if (viewEvent.userProperties) {
+  if (Object.keys(viewEvent.userProperties).length > 0) {
     const upTbody = document.getElementById('upTbody');
     const upImg = document.getElementById('upImg');
     insertData(viewEvent.userProperties, upTbody);

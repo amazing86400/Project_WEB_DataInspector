@@ -8,14 +8,14 @@ html {
 }
 
 body {
-  height: 97.9%;
+  height: 92.4%;
   margin: 8px 0px;
 }
 
 .header2 {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   margin: 5px 0px;
   background-color: rgb(33, 41, 54);
   padding: 10px 0px 4px 5px;
@@ -27,6 +27,7 @@ body {
 
 .contact {
   margin-right: 70px;
+  color: #fff;
 }
 
 .header {
@@ -36,6 +37,7 @@ body {
 
 .container2 {
   margin: 0px 8px;
+  height: 100%;
 }
 
 .line {
