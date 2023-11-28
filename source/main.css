@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Noto';
-  src: url(asset/NotoSansKR-VariableFont_wght.ttf);
+  src: url(assets/NotoSansKR-VariableFont_wght.ttf);
 }
 
 html {
@@ -137,18 +137,18 @@ img {
 
 .copyImg {
   width: 20px;
-  content: url(asset/copy.png);
+  content: url(assets/copy.png);
   /* background-size: 100%; */
 }
 
 .check {
   width: 20px;
-  content: url(asset/checkmark.png);
+  content: url(assets/checkmark.png);
 }
 
 .dropDown {
   width: 20px;
-  content: url(asset/up-arrow.png);
+  content: url(assets/up-arrow.png);
   transform: inherit;
 }
 
