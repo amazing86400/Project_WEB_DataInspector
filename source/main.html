@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="asset/faviLogo.png"/>
-    <link rel="apple-touch-icon" href="asset/faviLogo.png"/>
+    <link rel="icon" href="assets/faviLogo.png"/>
+    <link rel="apple-touch-icon" href="assets/faviLogo.png"/>
     <script src="./common.js"></script>
     <script src="./convertJson.js"></script>
     <link rel="stylesheet" href="./main.css" />
@@ -17,31 +17,31 @@
         <p>by GMP Tech</p>
       </div>
     </header> -->
-    <div class="header2">
-      <img class="logoImg" src="asset/logo.png">
+    <div class="header">
+      <img class="logoImg" src="assets/logo.png">
       <div class="contact">Contact Us</div>
     </div>
-    <div class="container2">
-      <div class="header">
-        <a href="http://210.114.9.23/GA_part/shhong/workspace/TechProject/Project_DataInspector/source/main.html">
+    <div class="container">
+      <div class="containerHeader">
+        <a href="main.html">
           <div class="firebase">
-            <img class="firebaseImg" src="asset/firebaseLogo.png">Firebase (GA4)
+            <img class="firebaseImg" src="assets/firebaseLogo.png">Firebase (GA4)
           </div>
         </a>
-        <a href="http://210.114.9.23/GA_part/shhong/workspace/TechProject/GTMgenerator/source/main.html">
+        <a href="../../GTMgenerator/Source/main.html">
           <div class="gtm">
-            <img class="gtmImg" src="asset/gtmLogo.png">Google Tag Manager</div>
+            <img class="gtmImg" src="assets/gtmLogo.png">Google Tag Manager</div>
         </a>
         <div class="line"></div>
       </div>
-      <div class="container">
-        <div class="subContainer">
+      <div class="contentContainer">
+        <div class="content">
           <textarea id="inputBox" placeholder="데이터 붙여넣기"></textarea>
           <button class="convertBtn" type="button" disabled onclick="setData();">Convert</button>
           <div>
             <!-- <div class="eventList">Event List</div> -->
             <div class="eventListHeader">Fired Events
-              <img class="trashImg" src="asset/trash3.png" onclick="clearList();">
+              <img class="trashImg" src="assets/trash3.png" onclick="clearList();">
             </div>
             <div class="eventList" id="eventList">
             </div>

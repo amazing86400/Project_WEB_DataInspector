@@ -4,7 +4,7 @@
 }
 
 html {
-  height: 94.3%;
+  height: 94.9%;
 }
 
 body {
@@ -12,7 +12,7 @@ body {
   margin: 8px 0px;
 }
 
-.header2 {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,16 +26,17 @@ body {
 }
 
 .contact {
+  font-family: 'Noto';
   margin-right: 70px;
   color: #fff;
 }
 
-.header {
+.containerHeader {
   display: flex;
   /* border-bottom: 2px solid rgb(238,240,243); */
 }
 
-.container2 {
+.container {
   margin: 0px 8px;
   height: 100%;
 }
@@ -90,17 +91,17 @@ a {
   /* border-bottom: none; */
 }
 
-.container {
+.contentContainer {
   height: 100%;
   border: 1px solid rgb(210,213,218);
   border-top: none;
 }
 
-.subContainer {
+.content {
   margin-top: 20px;
 }
 
-.container, .subContainer {
+.contentContainer, .content {
   background-color: rgb(242,245,249);
   width: 100%;
   display: flex;
