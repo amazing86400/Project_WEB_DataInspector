@@ -9,11 +9,33 @@ html {
 
 body {
   height: 97.9%;
+  margin: 8px 0px;
+}
+
+.header2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 5px 0px;
+  background-color: rgb(33, 41, 54);
+  padding: 10px 0px 4px 5px;
+}
+
+.logoImg {
+  width: 190px;
+}
+
+.contact {
+  margin-right: 70px;
 }
 
 .header {
   display: flex;
   /* border-bottom: 2px solid rgb(238,240,243); */
+}
+
+.container2 {
+  margin: 0px 8px;
 }
 
 .line {
@@ -246,7 +268,6 @@ thead > tr > th {
 
 thead, td, th {
   font-family: 'Noto';
-  /* border: 1px solid rgb(218 222 228); */
   padding-left: 7px;
 }
 
@@ -268,9 +289,6 @@ tbody > tr > td:first-child {
 
 tbody > tr > td:nth-child(2) {
   font-family: 'Noto';
-  width: 350px;
-  table-layout: fixed;
-  border-right: none;
   font-size: 12.5px;
   font-weight: 400;
   color: rgb(59,68,81);

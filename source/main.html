@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="asset/faviLogo.png"/>
+    <link rel="apple-touch-icon" href="asset/faviLogo.png"/>
     <script src="./common.js"></script>
     <script src="./convertJson.js"></script>
     <link rel="stylesheet" href="./main.css" />
@@ -15,103 +17,109 @@
         <p>by GMP Tech</p>
       </div>
     </header> -->
-    <div class="header">
-      <a href="http://210.114.9.23/GA_part/shhong/workspace/TechProject/Project_DataInspector/source/main.html">
-        <div class="firebase">
-          <img class="firebaseImg" src="asset/firebaseLogo.png">Firebase (GA4)
-        </div>
-      </a>
-      <a href="http://210.114.9.23/GA_part/shhong/workspace/TechProject/GTMgenerator/source/main.html">
-        <div class="gtm">
-          <img class="gtmImg" src="asset/gtmLogo.png">Google Tag Manager</div>
-      </a>
-      <div class="line"></div>
+    <div class="header2">
+      <img class="logoImg" src="asset/logo.png">
+      <div class="contact">Contact Us</div>
     </div>
-    <div class="container">
-      <div class="subContainer">
-        <textarea id="inputBox" placeholder="데이터 붙여넣기"></textarea>
-        <button class="convertBtn" type="button" disabled onclick="setData();">Convert</button>
-        <div>
-          <!-- <div class="eventList">Event List</div> -->
-          <div class="eventListHeader">Fired Events
-            <img class="trashImg" src="asset/trash3.png" onclick="clearList();">
+    <div class="container2">
+      <div class="header">
+        <a href="http://210.114.9.23/GA_part/shhong/workspace/TechProject/Project_DataInspector/source/main.html">
+          <div class="firebase">
+            <img class="firebaseImg" src="asset/firebaseLogo.png">Firebase (GA4)
           </div>
-          <div class="eventList" id="eventList">
+        </a>
+        <a href="http://210.114.9.23/GA_part/shhong/workspace/TechProject/GTMgenerator/source/main.html">
+          <div class="gtm">
+            <img class="gtmImg" src="asset/gtmLogo.png">Google Tag Manager</div>
+        </a>
+        <div class="line"></div>
+      </div>
+      <div class="container">
+        <div class="subContainer">
+          <textarea id="inputBox" placeholder="데이터 붙여넣기"></textarea>
+          <button class="convertBtn" type="button" disabled onclick="setData();">Convert</button>
+          <div>
+            <!-- <div class="eventList">Event List</div> -->
+            <div class="eventListHeader">Fired Events
+              <img class="trashImg" src="asset/trash3.png" onclick="clearList();">
+            </div>
+            <div class="eventList" id="eventList">
+            </div>
           </div>
+          <div class="tableField">
+            <div class="tableDiv">
+              <table>
+                <thead>
+                  <tr>
+                    <th colspan="2" onclick="dropDown(this);">Event Parameters</th>
+                    <th class="copyTh">
+                      <img class="copyImg" onclick="copyData();">
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="epTbody">
+                </tbody>
+              </table>
+            </div>
+            <div class="tableDiv">
+              <table>
+                <thead>
+                  <tr>
+                    <th colspan="2" onclick="dropDown(this);">User Properties</th>
+                    <th class="copyTh" onclick="dropDown(this);">
+                      <img id="upImg">
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="upTbody">
+                </tbody>
+              </table>
+            </div>
+            <div class="tableDiv">
+              <table>
+                <thead>
+                  <tr>
+                    <th colspan="2" onclick="dropDown(this);">Transaction</th>
+                    <th class="copyTh" onclick="dropDown(this);">
+                      <img id="transImg">
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="transactionTbody">
+                </tbody>
+              </table>
+            </div>
+            <div class="tableDiv">
+              <table>
+                <thead>
+                  <tr>
+                    <th colspan="2" onclick="dropDown(this);">Items</th>
+                    <th class="copyTh" onclick="dropDown(this);">
+                      <img id="itemImg">
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="itemsTbody">
+                </tbody>
+              </table>
+            </div>
+            <div class="tableDiv">
+              <table>
+                <thead>
+                  <tr>
+                    <th colspan="2" onclick="dropDown(this);">Remain Datas</th>
+                    <th class="copyTh" onclick="dropDown(this);">
+                      <img id="remainImg">
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="remainTbody" class="remainTbody sum">
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
         </div>
-        <div class="tableField">
-          <div class="tableDiv">
-            <table>
-              <thead>
-                <tr>
-                  <th colspan="2" onclick="dropDown(this);">Event Parameters</th>
-                  <th class="copyTh">
-                    <img class="copyImg" onclick="copyData();">
-                  </th>
-                </tr>
-              </thead>
-              <tbody id="epTbody">
-              </tbody>
-            </table>
-          </div>
-          <div class="tableDiv">
-            <table>
-              <thead>
-                <tr>
-                  <th colspan="2" onclick="dropDown(this);">User Properties</th>
-                  <th class="copyTh" onclick="dropDown(this);">
-                    <img id="upImg">
-                  </th>
-                </tr>
-              </thead>
-              <tbody id="upTbody">
-              </tbody>
-            </table>
-          </div>
-          <div class="tableDiv">
-            <table>
-              <thead>
-                <tr>
-                  <th colspan="2" onclick="dropDown(this);">Transaction</th>
-                  <th class="copyTh" onclick="dropDown(this);">
-                    <img id="transImg">
-                  </th>
-                </tr>
-              </thead>
-              <tbody id="transactionTbody">
-              </tbody>
-            </table>
-          </div>
-          <div class="tableDiv">
-            <table>
-              <thead>
-                <tr>
-                  <th colspan="2" onclick="dropDown(this);">Items</th>
-                  <th class="copyTh" onclick="dropDown(this);">
-                    <img id="itemImg">
-                  </th>
-                </tr>
-              </thead>
-              <tbody id="itemsTbody">
-              </tbody>
-            </table>
-          </div>
-          <div class="tableDiv">
-            <table>
-              <thead>
-                <tr>
-                  <th colspan="2" onclick="dropDown(this);">Remain Datas</th>
-                  <th class="copyTh" onclick="dropDown(this);">
-                    <img id="remainImg">
-                  </th>
-                </tr>
-              </thead>
-              <tbody id="remainTbody" class="remainTbody sum">
-              </tbody>
-            </table>
-          </div>
-        </div>
-        
       </div>
     </div>
     <script>

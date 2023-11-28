@@ -1,8 +1,12 @@
 function setData() {
-  convertJson();
-  viewList();
   const textArea = document.getElementById('inputBox');
   const copyClass = document.querySelector('.copyImg');
+  if (textArea.value.includes('Logging event:')) {
+    //AOS 함수
+  }else {
+    convertJson();
+  }
+  viewList();
   textArea.value = '';
   convertBtn.disabled = true;
   copyClass.className = 'copyImg'
