@@ -2,14 +2,14 @@ function setData() {
   const textArea = document.getElementById('inputBox');
   const copyClass = document.querySelector('.copyImg');
   if (textArea.value.includes('Logging event:')) {
-    //AOS 함수
-  }else {
-    convertJson();
+    convertJsonAOS();
+  } else {
+    convertJsoniOS();
   }
   viewList();
   textArea.value = '';
   convertBtn.disabled = true;
-  copyClass.className = 'copyImg'
+  copyClass.className = 'copyImg';
 }
 
 // 변환 후 이벤트 리스트를 출력해주는 함수
@@ -92,7 +92,7 @@ function viewEvent(no, clickDiv) {
   divs.forEach((div) => div.classList.remove('selected'));
 
   clickDiv.classList.add('selected');
-  copyClass.className = 'copyImg'
+  copyClass.className = 'copyImg';
 }
 
 // 데이터를 HTML요소 추가해주는 함수
@@ -195,10 +195,10 @@ function clearTableContents() {
     tbody.replaceChildren();
   });
 
-  imgIds.forEach((imgId)=> {
+  imgIds.forEach((imgId) => {
     const img = document.getElementById(imgId);
     img.className = '';
-  })
+  });
 }
 
 // 이벤트 리스트 초기화 함수
@@ -212,7 +212,7 @@ function clearList() {
 // 드롭다운 함수
 function dropDown(thead) {
   const tbody = thead.parentElement.parentElement.nextElementSibling;
-  const img = thead.children[0] ? thead.children[0] : thead.nextElementSibling.children[0]
+  const img = thead.children[0] ? thead.children[0] : thead.nextElementSibling.children[0];
   if (tbody.childElementCount > 0) {
     tbody.classList.toggle('sum');
   }
@@ -273,7 +273,7 @@ function formatTable(table) {
 
 function copyTextToClipboard(text) {
   const textarea = document.createElement('textarea');
-  const img = document.querySelector('.copyImg')
+  const img = document.querySelector('.copyImg');
   textarea.value = text;
   document.body.appendChild(textarea);
   textarea.select();

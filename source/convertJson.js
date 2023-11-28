@@ -1,12 +1,48 @@
 // 최종 데이터 Array
 let events = [];
 
+function convertJsonAOS() {
+  // 이벤트데이터 초기화
+  let eventData = initializeEventData();
+
+  const inputBox = document.getElementById('inputBox');
+  const inputTxt = inputBox.value.trim();
+  const splitTxt = inputTxt.split(',params=Bundle');
+
+  // 이벤트이름 설정
+  const eventName = splitTxt[0].split('name=')[1];
+  eventData.eventName = eventName;
+
+  // 이벤트 매개변수 설정
+  const paramSections = splitTxt[1].match(/\{([^}]+)\}/)[1];
+  let formattedParams1 = paramSections.replace(/(\w+)=([^,]+)/g, '"$1":"$2"');
+  let formattedParams2 = formattedParams1.replace(/(\w+\([^=]+\))=([^,]+)/g, '"$1":"$2"');
+  let dataObject = JSON.parse(`{${formattedParams2.replace(/'/g, '"')}}`);
+
+  for (let key in dataObject) {
+    let value = dataObject[key];
+    if (key == 'ga_screen(_sn)') {
+      eventData.eventParams['firebase_screen_name'] = value;
+    } else if (key == 'ga_screen_class(_sc)') {
+      eventData.eventParams['firebase_screen_class'] = value;
+    } else if (key.includes('ep_') || key.includes('cm_') || key.includes('dimension') || key.includes('metric')) {
+      eventData.eventParams[key] = value;
+    } else {
+      eventData.remainDatas[key] = value;
+    }
+  }
+  events.push(eventData);
+}
+
 /*
   데이터 딕셔너리 변환 함수 정의
   protoBuf 타입으로 직렬화된 데이터를 JSON 구조로 변환하는 함수입니다.
 */
-function convertJson() {
+function convertJsoniOS() {
   try {
+    const inputBox = document.getElementById('inputBox');
+    const inputTxt = inputBox.value.trim();
+
     // 이벤트 이름을 매핑하는 객체
     const convertKey = {
       // 이벤트명
@@ -34,12 +70,18 @@ function convertJson() {
       _sno: 'ga_session_number',
     };
 
-    const inputBox = document.getElementById('inputBox');
-    const inputTxt = inputBox.value.trim();
+    // const inputBox = document.getElementById('inputBox');
+    // const inputTxt = inputBox.value.trim();
     const bundleSections = inputTxt.split('bundle {\n  protocol_version: 1\n  '); // 번들 기준 Array
 
     // 번들 기준으로 반복문
     for (let i = 1; i < bundleSections.length; i++) {
+      if (bundleSections[i].includes('29: {')) {
+        const startIndex = bundleSections[i].indexOf('29: {');
+        const endIndex = bundleSections[i].indexOf('52: "G1--"');
+        const sliceTxt = bundleSections[i].slice(startIndex, endIndex);
+        bundleSections[i] = bundleSections[i].replace(sliceTxt, '');
+      }
       const eventSections = bundleSections[i].split('event {'); // 이벤트 기준 Array
 
       // 이벤트 기준으로 반복문: ""값일 경우 대비하여 가장 처음 조건문 실행
@@ -65,7 +107,7 @@ function convertJson() {
     }
     console.log(events);
   } catch (e) {
-    console.log('setData 함수 ERROR');
+    console.log('convertJson 함수 ERROR');
     console.log(e.message);
   }
 }
@@ -98,7 +140,7 @@ function decodeUnicodeEscapes(value, dataType) {
 
     return numberValue;
   }
-  return value
+  return value;
 }
 
 /*
@@ -110,9 +152,8 @@ function handleParam(paramSections, convertKey, eventData) {
     // key, value 설정
     const key = paramSections.split('"')[1];
     const value = paramSections.split('value:')[1] ? paramSections.split('value:')[1].replaceAll('"', '').trim() : 'Error: 값이 없습니다.';
-    
 
-    const transactionKey = ['currency', 'transaction_id', 'value', 'tax', 'shipping', 'affiliation', 'coupon', 'payment_type','shipping_tier'];
+    const transactionKey = ['currency', 'transaction_id', 'value', 'tax', 'shipping', 'affiliation', 'coupon', 'payment_type', 'shipping_tier'];
 
     // 데이터 타입 설정
     const isInt = paramSections.includes('int_value');
