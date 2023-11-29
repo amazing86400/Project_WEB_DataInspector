@@ -14,14 +14,14 @@ html {
 
 body {
   height: 92.4%;
-  margin: 8px 0px;
+  margin: 0px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 5px 0px;
+  margin: 0px 0px 5px 0px;
   background-color: rgb(33, 41, 54);
   padding: 10px 0px 4px 5px;
 }
