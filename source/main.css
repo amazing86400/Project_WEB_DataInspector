@@ -35,6 +35,11 @@ body {
   font-family: 'Noto';
   margin-right: 70px;
   color: #fff;
+  cursor: pointer;
+}
+
+.contact:hover {
+  color: rgb(242, 244, 246);
 }
 
 .containerHeader {

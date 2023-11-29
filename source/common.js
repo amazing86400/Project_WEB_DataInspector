@@ -319,6 +319,10 @@ function changeOS(os) {
   }
 }
 
+function contactUs() {
+  alert('아직 준비중입니다.')
+}
+
 // 에러 메시지 정의 함수
 function errorMessage(errorCode) {
   const convertError = {
