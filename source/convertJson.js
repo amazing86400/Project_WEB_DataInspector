@@ -69,7 +69,7 @@ function convertJsonAOS() {
   const userInputBox = document.getElementById('userInputBox');
   if (userInputBox) {
     const userInputTxt = userInputBox.value.trim();
-    const splitUserTxt = userInputTxt.split('V  Setting user property: ');
+    const splitUserTxt = userInputTxt.split('V  Setting user property: ');
 
     for (let i in splitUserTxt) {
       const userProperty = splitUserTxt[i];
