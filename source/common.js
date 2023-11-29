@@ -293,19 +293,17 @@ function copyTextToClipboard(text) {
   document.execCommand('copy');
   document.body.removeChild(textarea);
   img.classList.add('check');
-  // alert('클립보드에 복사되었습니다.');
 }
 
 function changeOS(os) {
   const inputField = document.getElementById('textAreaField');
-  inputField.replaceChildren();
   if (os === 'ios') {
-    inputField.insertAdjacentHTML('beforeend',
-    `<textarea id="inputBox" class="iosInputBox" placeholder="이벤트 매개변수 데이터 붙여넣기"></textarea>`);
+    inputField.lastChild.remove();
+    document.getElementById('inputBox').className = 'iosInputBox';
   } else if (os === 'aos') {
+    document.getElementById('inputBox').className = 'aosInputBox';
     inputField.insertAdjacentHTML('beforeend',
-    `<textarea id="inputBox" class="aosInputBox" placeholder="이벤트 매개변수 데이터 붙여넣기"></textarea>
-    <textarea id="userInputBox" class="aosInputBox" placeholder="사용자 속성 데이터 붙여넣기"></textarea>`)
+    `<textarea id="userInputBox" class="aosInputBox" placeholder="사용자 속성 데이터 붙여넣기"></textarea>`)
   }
 }
 
