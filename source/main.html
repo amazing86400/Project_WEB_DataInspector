@@ -36,10 +36,28 @@
       </div>
       <div class="contentContainer">
         <div class="content">
-          <textarea id="inputBox" placeholder="데이터 붙여넣기"></textarea>
+          <div class="inputField">
+            <div class="osIconDiv">
+              <input class="osInput" id="ios" type="radio" name="os" value="ios" checked>
+              <label for="ios" onclick="changeOS('ios');">
+                <div class="iosBackground">
+                  <i class="iosIcon">plat_ios</i>
+                </div>
+              </label>
+              <input class="osInput" id="aos" type="radio" name="os" value="aos">
+              <label for="aos" onclick="changeOS('aos');">
+                <div class="aosBackground">
+                  <i class="aosIcon">plat_android</i>
+                </div>
+              </label>
+            </div>
+            <div id="textAreaField">
+              <textarea id="inputBox" class="iosInputBox" placeholder="이벤트 매개변수 데이터 붙여넣기"></textarea>
+              <!-- <textarea id="inputBox" placeholder="사용자 속성 데이터 붙여넣기"></textarea> -->
+            </div>
+          </div>
           <button class="convertBtn" type="button" disabled onclick="setData();">Convert</button>
           <div>
-            <!-- <div class="eventList">Event List</div> -->
             <div class="eventListHeader">Fired Events
               <img class="trashImg" src="assets/trash3.png" onclick="clearList();">
             </div>

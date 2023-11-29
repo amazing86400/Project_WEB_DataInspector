@@ -18,7 +18,11 @@ function viewList() {
   eventTag.replaceChildren();
   for (i in events) {
     const timestamp = Number(events[i].remainDatas.start_timestamp_millis);
-    const formattedDate = timestamp ? new Date(timestamp).toISOString().replace('T', ' ').substring(0, 19) : '';
+    const nineHoursInMillis = 9 * 60 * 60 * 1000;
+    // 9시간을 더한 timestamp
+    const timestampWithNineHours = timestamp + nineHoursInMillis;
+
+    const formattedDate = timestampWithNineHours ? new Date(timestampWithNineHours).toISOString().replace('T', ' ').substring(0, 19) : '';
     if (events[i].eventParams.error_code) {
       const eventName = events[i].eventName == 'error_code' ? 'firebase_error' : events[i].eventName;
       eventTag.insertAdjacentHTML(
@@ -158,7 +162,7 @@ function insertData(data, tbody, i) {
 
 function createTr(key, value, valueType, tbody, isItem) {
   const selectedOS = document.querySelector('input[name="os"]:checked').value;
-  if (selectedOS == 'AOS') {
+  if (selectedOS == 'aos') {
     tbody.insertAdjacentHTML(
       'beforeend',
       `<tr>
@@ -290,6 +294,19 @@ function copyTextToClipboard(text) {
   document.body.removeChild(textarea);
   img.classList.add('check');
   // alert('클립보드에 복사되었습니다.');
+}
+
+function changeOS(os) {
+  const inputField = document.getElementById('textAreaField');
+  inputField.replaceChildren();
+  if (os === 'ios') {
+    inputField.insertAdjacentHTML('beforeend',
+    `<textarea id="inputBox" class="iosInputBox" placeholder="이벤트 매개변수 데이터 붙여넣기"></textarea>`);
+  } else if (os === 'aos') {
+    inputField.insertAdjacentHTML('beforeend',
+    `<textarea id="inputBox" class="aosInputBox" placeholder="이벤트 매개변수 데이터 붙여넣기"></textarea>
+    <textarea id="userInputBox" class="aosInputBox" placeholder="사용자 속성 데이터 붙여넣기"></textarea>`)
+  }
 }
 
 // 에러 메시지 정의 함수

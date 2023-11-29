@@ -90,9 +90,6 @@ function convertJsonAOS() {
 */
 function convertJsoniOS() {
   try {
-    const inputBox = document.getElementById('inputBox');
-    const inputTxt = inputBox.value.trim();
-
     // 이벤트 이름을 매핑하는 객체
     const convertKey = {
       // 이벤트명
@@ -120,8 +117,8 @@ function convertJsoniOS() {
       _sno: 'ga_session_number',
     };
 
-    // const inputBox = document.getElementById('inputBox');
-    // const inputTxt = inputBox.value.trim();
+    const inputBox = document.getElementById('inputBox');
+    const inputTxt = inputBox.value.trim();
     const bundleSections = inputTxt.split('bundle {\n  protocol_version: 1\n  '); // 번들 기준 Array
 
     // 번들 기준으로 반복문

@@ -3,6 +3,11 @@
   src: url(assets/NotoSansKR-VariableFont_wght.ttf);
 }
 
+@font-face {
+  font-family: 'GMP Icons';
+  src: url(assets/GMPIcons.woff2);
+}
+
 html {
   height: 94.9%;
 }
@@ -108,7 +113,109 @@ a {
   align-items: flex-start;
 }
 
-#inputBox {
+.osIconDiv {
+  display: flex;
+  /* width: 265px; */
+  margin-left: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+
+.inputField {
+  width: 267px;
+}
+
+.osInput {
+  display: none;
+}
+
+.iosBackground, .aosBackground {
+  background-color: currentColor;
+  border-radius: 19px;
+  display: inline-block;
+  height: 34px;
+  line-height: 28px;
+  margin-right: 8px;
+  text-align: center;
+  width: 34px;
+}
+
+.iosBackground {
+  color: #fff;
+  /* color: rgba(0, 0, 0, 0.06); */
+  /* box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 2px 10px -1px rgba(0, 0, 0, 0.12); */
+}
+
+.iosBackground:hover {
+  color: rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 2px 10px -1px rgba(0, 0, 0, 0.12);
+}
+
+/* #74e3fb */
+.aosBackground {
+  margin-left: 20px;
+  color: #fff;
+  /* box-shadow: 0px 0px 15px 4px #80C7FF; */
+}
+
+.aosBackground:hover {
+  color: rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 2px 10px -1px rgba(0, 0, 0, 0.12);
+}
+
+/* input[type='radio']:checked + label > div {
+  color: rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 2px 10px -1px rgba(0, 0, 0, 0.12);
+} */
+
+input[type='radio']:checked + label > .iosBackground {
+  color: rgb(64, 135, 225);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 2px 10px -1px rgba(0, 0, 0, 0.12);
+  /* box-shadow: 0px 0px 15px 4px #80C7FF; */
+}
+
+input[type='radio']:checked + label > div > .iosIcon {
+  color: #fff;
+}
+
+input[type='radio']:checked + label > .aosBackground {
+  color: #4db6ac;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 2px 10px -1px rgba(0, 0, 0, 0.12);
+  /* box-shadow: 0px 0px 15px 4px #80C7FF; */
+}
+
+input[type='radio']:checked + label > div > .aosIcon {
+  color: #fff;
+}
+
+.iosIcon {
+  line-height: 35px;
+  color: rgb(64, 135, 225) ;
+  font-family: "GMP Icons";
+  font-style: normal;
+  font-size: 28px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.aosIcon {
+  line-height: 35px;
+  color: #4db6ac;
+  font-family: "GMP Icons";
+  font-style: normal;
+  font-size: 32px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.aosInputBox {
+  border: 1.6px solid rgb(210,213,218);
+  border-radius: 4px;
+  width: 265px;
+  height: 294.5px;
+  resize: none;
+  margin-left: 5px;
+}
+
+.iosInputBox {
   border: 1.6px solid rgb(210,213,218);
   border-radius: 4px;
   width: 265px;
