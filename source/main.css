@@ -87,7 +87,7 @@ a {
 }
 
 .gtm {
-  width: 190px;
+  width: 170px;
   font-family: 'Noto';
   font-size: 15px;
   font-weight: 400;
@@ -194,6 +194,7 @@ input[type='radio']:checked + label > div > .aosIcon {
   font-family: "GMP Icons";
   font-style: normal;
   font-size: 28px;
+  user-select: none;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -203,6 +204,7 @@ input[type='radio']:checked + label > div > .aosIcon {
   font-family: "GMP Icons";
   font-style: normal;
   font-size: 32px;
+  user-select: none;
   -webkit-font-smoothing: antialiased;
 }
 

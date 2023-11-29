@@ -168,6 +168,7 @@ function createTr(key, value, valueType, tbody, isItem) {
       `<tr>
         <td>${isItem}${key}</td>
         <td>${value}</td>
+        <td></td>
       </tr>`
     );
   } else if (isSearchValid(key, value, valueType)) {
@@ -297,13 +298,18 @@ function copyTextToClipboard(text) {
 
 function changeOS(os) {
   const inputField = document.getElementById('textAreaField');
+  const userInput = document.getElementById('userInputBox');
   if (os === 'ios') {
-    inputField.lastChild.remove();
-    document.getElementById('inputBox').className = 'iosInputBox';
+    if (userInput) {
+      inputField.lastChild.remove();
+      document.getElementById('inputBox').className = 'iosInputBox';
+    }
   } else if (os === 'aos') {
-    document.getElementById('inputBox').className = 'aosInputBox';
-    inputField.insertAdjacentHTML('beforeend',
-    `<textarea id="userInputBox" class="aosInputBox" placeholder="사용자 속성 데이터 붙여넣기"></textarea>`)
+    if (!userInput) {
+      inputField.insertAdjacentHTML('beforeend',
+      `<textarea id="userInputBox" class="aosInputBox" placeholder="사용자 속성 데이터 붙여넣기"></textarea>`)
+      document.getElementById('inputBox').className = 'aosInputBox';
+    }
   }
 }
 
