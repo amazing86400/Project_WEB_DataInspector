@@ -5,16 +5,46 @@ function convertJsonAOS() {
   // 이벤트데이터 초기화
   let eventData = initializeEventData();
 
-  const inputBox = document.getElementById('inputBox');
-  const inputTxt = inputBox.value.trim();
-  const splitTxt = inputTxt.split(',params=Bundle');
+  // 이벤트 매개변수 및 전자상거래 데이터 설정
+  const eventInputBox = document.getElementById('inputBox');
+  const eventInputTxt = eventInputBox.value.trim();
+  const splitEventTxt = eventInputTxt.split(',params=Bundle');
 
   // 이벤트이름 설정
-  const eventName = splitTxt[0].split('name=')[1];
-  eventData.eventName = eventName;
+  eventData.eventName = splitEventTxt[0].split('name=')[1];
 
   // 이벤트 매개변수 설정
-  const paramSections = splitTxt[1].match(/\{([^}]+)\}/)[1];
+  const transactionKey = ['currency', 'transaction_id', 'value', 'tax', 'shipping', 'affiliation', 'coupon', 'payment_type', 'shipping_tier'];
+  let paramSections = splitEventTxt[1].replace(/^\[\{|\}\]$/g, '');
+
+  // 전자상거래 상품 정보 설정
+  if (paramSections.includes('items=')) {
+    // item 추출
+    const startIndex = paramSections.indexOf('items=');
+    const endIndex = paramSections.indexOf('}]]');
+    const sliceTxt = paramSections.slice(startIndex, endIndex);
+    const itemSections = sliceTxt.split('{');
+
+    // items 변수 선언
+    let items = [];
+    eventData.eventParams.items = eventData.eventParams.items || [];
+
+    // 상품 데이터 설정
+    for (let i = 1; i < itemSections.length; i++) {
+      let itemSection = itemSections[i];
+      if (itemSection.includes('}], Bundle[')) {
+        itemSection = itemSection.replace('}], Bundle[', '');
+      }
+      const item = itemSection.replace(/(\w+)=([^,]+)/g, '"$1":"$2"');
+      items.push(JSON.parse(`{${item.replace(/'/g, '"')}}`));
+    }
+    eventData.eventParams.items = items;
+
+    // items 상품 제거
+    paramSections = paramSections.replace(sliceTxt + '}]], ', '');
+  }
+
+  // 상품 정보 제외한 이 외 정보 설정
   let formattedParams1 = paramSections.replace(/(\w+)=([^,]+)/g, '"$1":"$2"');
   let formattedParams2 = formattedParams1.replace(/(\w+\([^=]+\))=([^,]+)/g, '"$1":"$2"');
   let dataObject = JSON.parse(`{${formattedParams2.replace(/'/g, '"')}}`);
@@ -27,10 +57,30 @@ function convertJsonAOS() {
       eventData.eventParams['firebase_screen_class'] = value;
     } else if (key.includes('ep_') || key.includes('cm_') || key.includes('dimension') || key.includes('metric')) {
       eventData.eventParams[key] = value;
+    } else if (transactionKey.includes(key)) {
+      eventData.eventParams.transactions = eventData.eventParams.transactions || {};
+      eventData.eventParams.transactions[key] = value;
     } else {
       eventData.remainDatas[key] = value;
     }
   }
+
+  // 사용자 속성 설정
+  const userInputBox = document.getElementById('userInputBox');
+  if (userInputBox) {
+    const userInputTxt = userInputBox.value.trim();
+    const splitUserTxt = userInputTxt.split('V  Setting user property: ');
+
+    for (let i in splitUserTxt) {
+      const userProperty = splitUserTxt[i];
+      if (userProperty.length > 0) {
+        const key = userProperty.split('\n')[0].split(',')[0].trim();
+        const value = userProperty.split('\n')[0].split(',')[1].trim();
+        eventData.userProperties[key] = value;
+      }
+    }
+  }
+
   events.push(eventData);
 }
 

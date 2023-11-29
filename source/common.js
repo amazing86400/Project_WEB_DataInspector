@@ -157,7 +157,16 @@ function insertData(data, tbody, i) {
 }
 
 function createTr(key, value, valueType, tbody, isItem) {
-  if (isSearchValid(key, value, valueType)) {
+  const selectedOS = document.querySelector('input[name="os"]:checked').value;
+  if (selectedOS == 'AOS') {
+    tbody.insertAdjacentHTML(
+      'beforeend',
+      `<tr>
+        <td>${isItem}${key}</td>
+        <td>${value}</td>
+      </tr>`
+    );
+  } else if (isSearchValid(key, value, valueType)) {
     tbody.insertAdjacentHTML(
       'beforeend',
       `<tr>
