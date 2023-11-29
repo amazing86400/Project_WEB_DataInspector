@@ -100,12 +100,17 @@ function viewEvent(no, clickDiv) {
 }
 
 // 데이터를 HTML요소 추가해주는 함수
-function insertData(data, tbody, i) {
-  const blockList = ['firebase_screen_id', '_c', 'realtime', 'ga_debug', 'firebase_event_origin', '_fi', '_fot', '_sid', '_sid', '_sno', '_lte', '_se', 'items', 'transactions', 'firebase_screen_name', 'firebase_screen_class', 'engagement_time_msec', '_ltv_KRW', '_mst'];
+function insertData(data, tbody, i) {  
+  const blockList = ['event_name', 'firebase_screen_id', '_c', 'realtime', 'ga_debug', 'firebase_event_origin', '_fi', '_fot', '_sid', '_sid', '_sno', '_lte', '_se', 'items', 'transactions', 'firebase_screen_name', 'firebase_screen_class', 'engagement_time_msec', '_ltv_KRW', '_mst'];
   const isItem = i ? 'item' + (Number(i) + 1) + '.' : '';
 
   // 화면 정보 설정(screen_name/screen_class)
   if (tbody == document.getElementById('epTbody')) {
+    // event_name 설정
+    const eventNameValue = data.event_name ? data.event_name : 'Error: 값이 없습니다.';
+    const eventNameValueType = typeof eventNameValue == 'string' ? 'str' : 'num';
+    createTr('event_name', eventNameValue, eventNameValueType, tbody, isItem);
+
     // screen_name 설정
     const screenNameValue = data.firebase_screen_name ? data.firebase_screen_name : 'Error: 값이 없습니다.';
     const screenNameValueType = typeof screenNameValue == 'string' ? 'str' : 'num';
@@ -297,6 +302,7 @@ function copyTextToClipboard(text) {
 }
 
 function changeOS(os) {
+  clearList();
   const inputField = document.getElementById('textAreaField');
   const userInput = document.getElementById('userInputBox');
   if (os === 'ios') {

@@ -11,7 +11,8 @@ function convertJsonAOS() {
   const splitEventTxt = eventInputTxt.split(',params=Bundle');
 
   // 이벤트이름 설정
-  eventData.eventName = splitEventTxt[0].split('name=')[1];
+  const eventName = splitEventTxt[0].split('name=')[1];
+  eventData.eventName = eventName;
 
   // 이벤트 매개변수 설정
   const transactionKey = ['currency', 'transaction_id', 'value', 'tax', 'shipping', 'affiliation', 'coupon', 'payment_type', 'shipping_tier'];
@@ -60,6 +61,8 @@ function convertJsonAOS() {
     } else if (transactionKey.includes(key)) {
       eventData.eventParams.transactions = eventData.eventParams.transactions || {};
       eventData.eventParams.transactions[key] = value;
+    } else if (eventName){
+      eventData.eventParams.event_name = eventName
     } else {
       eventData.remainDatas[key] = value;
     }
@@ -144,7 +147,9 @@ function convertJsoniOS() {
               handleParam(param, convertKey, eventData); // 이벤트 매개변수 및 전자상거래 데이터 설정
             } else {
               const eventNameKey = param.split('"')[1];
-              eventData.eventName = convertKey[eventNameKey] || eventNameKey; // 이벤트명 설정
+              const eventName = convertKey[eventNameKey] || eventNameKey;
+              eventData.eventName = eventName; // 이벤트명 설정
+              eventData.eventParams.event_name = eventName; // 이벤트명 설정
               handleRemainData(param, eventData); // 사용자 속성 및 이 외 데이터 설정
             }
           }
