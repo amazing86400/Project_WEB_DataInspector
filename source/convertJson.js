@@ -50,13 +50,13 @@ function convertJsonAOS() {
 
         // (new) 상품 객체로 변환
         const keyValuePairs = itemSection.split(', ');
-        const dataObject2 = {};
+        const item = {};
         keyValuePairs.forEach(pair => {
           const [key, value] = pair.split('=');
           const checkValue = value !== '' ? value : 'Error: 값이 없습니다.';
-          dataObject2[key] = checkValue;
+          item[key] = checkValue;
         });
-        items.push(dataObject2) ;
+        items.push(item) ;
 
         // (old)
         // const item = itemSection.replace(/(\w+)=([^,]+)/g, '"$1":"$2"');
