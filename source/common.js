@@ -1,10 +1,13 @@
 function setData() {
   const textArea = document.getElementById('inputBox');
   const copyClass = document.querySelector('.copyImg');
-  if (textArea.value.includes('Logging event:')) {
+  const selectedOS = document.querySelector('input[name="os"]:checked').value;
+  if (textArea.value.includes('Logging event:') && selectedOS === 'aos') {
     convertJsonAOS();
-  } else {
+  } else if (textArea.value.includes('bundle') && selectedOS === 'ios')  {
     convertJsoniOS();
+  } else {
+    alert('OS를 확인해주세요.')
   }
   viewList();
   textArea.value = '';
@@ -17,32 +20,23 @@ function viewList() {
   const eventTag = document.getElementById('eventList');
   eventTag.replaceChildren();
   for (i in events) {
-    const timestamp = Number(events[i].remainDatas.start_timestamp_millis);
+    const event = events[i]
+    const timestamp = Number(event.remainDatas.start_timestamp_millis);
     const nineHoursInMillis = 9 * 60 * 60 * 1000;
     // 9시간을 더한 timestamp
     const timestampWithNineHours = timestamp + nineHoursInMillis;
-
     const formattedDate = timestampWithNineHours ? new Date(timestampWithNineHours).toISOString().replace('T', ' ').substring(0, 19) : '';
-    if (events[i].eventParams.error_code) {
-      const eventName = events[i].eventName == 'error_code' ? 'firebase_error' : events[i].eventName;
-      eventTag.insertAdjacentHTML(
-        'beforeend',
-        `<div class="eventSummary error"  onclick="viewEvent(${i},this)">
-          <div class="evnetNo">${Number(i) + 1}</div>
-          <div class="eventName">${eventName}</div>
-          <div class="time">${formattedDate}</div>
-        </div>`
-      );
-    } else {
-      eventTag.insertAdjacentHTML(
-        'beforeend',
-        `<div class="eventSummary" onclick="viewEvent(${i},this)">
-          <div class="evnetNo">${Number(i) + 1}</div>
-          <div class="eventName">${events[i].eventName}</div>
-          <div class="time">${formattedDate}</div>
-        </div>`
-      );
-    }
+    const eventName = event.eventParams.error_code ? 'firebase_error' : events[i].eventName;
+    const eventSummaryClass = event.eventParams.error_code ? 'error' : '';
+
+    eventTag.insertAdjacentHTML(
+      'beforeend',
+      `<div class="eventSummary ${eventSummaryClass}" onclick="viewEvent(${i}, this)">
+        <div class="evnetNo">${Number(i) + 1}</div>
+        <div class="eventName">${eventName}</div>
+        <div class="time">${formattedDate}</div>
+      </div>`
+    );
   }
 }
 
@@ -84,7 +78,7 @@ function viewEvent(no, clickDiv) {
   }
 
   // 기타 데이터 출력
-  if (viewEvent.remainDatas) {
+  if (Object.keys(viewEvent.remainDatas).length > 0) {
     const remainTbody = document.getElementById('remainTbody');
     const remainImg = document.getElementById('remainImg');
     insertData(viewEvent.remainDatas, remainTbody);
@@ -101,7 +95,7 @@ function viewEvent(no, clickDiv) {
 
 // 데이터를 HTML요소 추가해주는 함수
 function insertData(data, tbody, i) {  
-  const blockList = ['event_name', 'firebase_screen_id', '_c', 'realtime', 'ga_debug', 'firebase_event_origin', '_fi', '_fot', '_sid', '_sid', '_sno', '_lte', '_se', 'items', 'transactions', 'firebase_screen_name', 'firebase_screen_class', 'engagement_time_msec', '_ltv_KRW', '_mst'];
+  const blockList = ['event_name', 'firebase_screen_id', '_c', 'realtime', 'ga_debug', 'firebase_event_origin', '_fi', '_fot', '_sid', '_sid', '_sno', '_lte', '_se', 'items', 'transactions', 'firebase_screen_name', 'firebase_screen_class', 'engagement_time_msec', '_ltv_KRW', '_mst', '_pi'];
   const isItem = i ? 'item' + (Number(i) + 1) + '.' : '';
 
   // 화면 정보 설정(screen_name/screen_class)
@@ -167,40 +161,18 @@ function insertData(data, tbody, i) {
 
 function createTr(key, value, valueType, tbody, isItem) {
   const selectedOS = document.querySelector('input[name="os"]:checked').value;
-  if (selectedOS == 'aos') {
-    tbody.insertAdjacentHTML(
-      'beforeend',
-      `<tr>
-        <td>${isItem}${key}</td>
-        <td>${value}</td>
-        <td></td>
-      </tr>`
-    );
-  } else if (isSearchValid(key, value, valueType)) {
-    tbody.insertAdjacentHTML(
-      'beforeend',
-      `<tr>
-        <td>${isItem}${key}</td>
-        <td>${value}</td>
-        <td>
-          <div class="${valueType}">${valueType}</div>
-        </td>
-      </tr>`
-    );
-  } else {
-    if (key == 'error_code') {
-      value = errorMessage(value);
-    }
-    tbody.insertAdjacentHTML(
-      'beforeend',
-      `<tr class="error">
-      <td>${isItem}${key}</td>
-      <td>${value}</td>
-      <td>
-        <div class="${valueType}">${valueType}</div>
-      </td>
-    </tr>`
-    );
+  const isValid = isSearchValid(key, value, valueType);
+
+  const rowHtml = `<tr>
+    <td>${isItem}${key}</td>
+    <td>${value}</td>
+    ${selectedOS === 'ios' ? `<td><div class="${valueType}">${valueType}</div></td>` : '<td></td>'}
+  </tr>`;
+
+  tbody.insertAdjacentHTML('beforeend', rowHtml);
+
+  if (!isValid) {
+    tbody.lastChild.classList.add('error');
   }
 }
 
@@ -241,15 +213,16 @@ function dropDown(thead) {
 function isSearchValid(key, value, type) {
   const intValueKeys = ['tax', 'shipping', 'value', 'quantity', 'price', 'discount', 'index'];
   const stringValueKeys = ['screen_name', 'screen_class', 'currency', 'transaction_id', 'coupon', 'payment_type', 'shipping_tier', 'affiliation'];
+  const selectedOS = document.querySelector('input[name="os"]:checked').value === 'aos' ? 'aos' : 'ios'
 
   switch (true) {
     case key.includes('item_') && type === 'num':
     case key.includes('dimension') && type === 'num':
     case key.includes('ep_') && type === 'num':
     case stringValueKeys.includes(key) && type === 'num':
-    case key.includes('metric') && type === 'str':
-    case key.includes('cm_') && type === 'str':
-    case intValueKeys.includes(key) && type === 'str':
+    case key.includes('metric') && type === 'str' && selectedOS === 'ios':
+    case key.includes('cm_') && type === 'str' && selectedOS === 'ios':
+    case intValueKeys.includes(key) && type === 'str' && selectedOS === 'ios':
     case key.includes('error'):
     case type === 'str' && value.includes('Error:'):
       return false;
@@ -307,7 +280,7 @@ function changeOS(os) {
   const userInput = document.getElementById('userInputBox');
   if (os === 'ios') {
     if (userInput) {
-      inputField.lastChild.remove();
+      userInput.remove();
       document.getElementById('inputBox').className = 'iosInputBox';
     }
   } else if (os === 'aos') {
@@ -320,7 +293,7 @@ function changeOS(os) {
 }
 
 function contactUs() {
-  alert('아직 준비중입니다.')
+  alert('준비중입니다.')
 }
 
 // 에러 메시지 정의 함수
@@ -361,3 +334,17 @@ function errorMessage(errorCode) {
 //   e.returnValue = dialogText;
 //   return dialogText;
 // };
+
+
+function aa(os) {
+  const isValid = isSearchValid();
+  if (os == 'aos' && isValid){
+    console.log('aos and valid')
+  } else if (os == 'aos' && !isValid) {
+    console.log('aos and not valid')
+  } else if (os == 'ios' && isValid) {
+    console.log('ios and valid')
+  } else if (os == 'ios' && !isValid) {
+    console.log('ios and not valid')
+  }
+}

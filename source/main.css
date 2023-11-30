@@ -307,12 +307,14 @@ img {
   cursor: pointer;
   border: 1px solid rgb(210,213,218);
   line-height: 15px;
-  height: 30px;
+  min-height: 30px;
   font-family: 'Noto';
   font-size: 14px;
   font-weight: 400;
   border-radius: 4px;
   margin-top: 1px;
+  display: flex;
+  align-items: center;
   background-color: white;
 }
 
@@ -324,20 +326,16 @@ img {
   width: 20px;
   margin: 5px;
   text-align: center;
-  display: inline-block;
 }
 
 .eventName {
-  display: inline-block;
-  /* width: 20px; */
-  margin: 5px 5px 8px 5px;
+  margin: 5px;
   text-align: center;
-  display: inline-block;
 }
 
 .time {
-  margin: 7px 5px 5px 5px;
-  float: right;
+  margin-left: auto;
+  margin-right: 5px;
   font-size: 13px;
   font-weight: 400;
 }
@@ -354,7 +352,9 @@ img {
 }
 
 table {
-  width: 600px;
+  width: 580px;
+  /* width: 100%; */
+  /* max-width: 700px; */
   word-break:break-all;
   font-size: 14px;
   border-collapse: collapse;
