@@ -1,18 +1,24 @@
 function setData() {
-  const textArea = document.getElementById('inputBox');
+  const textArea = document.getElementById('inputBox').value;
   const copyClass = document.querySelector('.copyImg');
   const selectedOS = document.querySelector('input[name="os"]:checked').value;
-  if (textArea.value.includes('Logging event:') && selectedOS === 'aos') {
+  if (textArea.includes('Logging event:') && selectedOS === 'aos') {
     convertJsonAOS();
-  } else if (textArea.value.includes('bundle') && selectedOS === 'ios')  {
+    viewList();
+    textArea = '';
+    convertBtn.disabled = true;
+    copyClass.className = 'copyImg';
+  } else if (textArea.includes('bundle') && selectedOS === 'ios')  {
     convertJsoniOS();
+    viewList();
+    textArea = '';
+    convertBtn.disabled = true;
+    copyClass.className = 'copyImg';
+  } else if (textArea == '') {
+    alert('확인할 데이터가 없습니다.')
   } else {
     alert('OS를 확인해주세요.')
   }
-  viewList();
-  textArea.value = '';
-  convertBtn.disabled = true;
-  copyClass.className = 'copyImg';
 }
 
 // 변환 후 이벤트 리스트를 출력해주는 함수
@@ -334,17 +340,3 @@ function errorMessage(errorCode) {
 //   e.returnValue = dialogText;
 //   return dialogText;
 // };
-
-
-function aa(os) {
-  const isValid = isSearchValid();
-  if (os == 'aos' && isValid){
-    console.log('aos and valid')
-  } else if (os == 'aos' && !isValid) {
-    console.log('aos and not valid')
-  } else if (os == 'ios' && isValid) {
-    console.log('ios and valid')
-  } else if (os == 'ios' && !isValid) {
-    console.log('ios and not valid')
-  }
-}
