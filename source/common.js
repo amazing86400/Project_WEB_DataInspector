@@ -1,20 +1,18 @@
 function setData() {
-  const textArea = document.getElementById('inputBox').value;
+  const textArea = document.getElementById('inputBox');
   const copyClass = document.querySelector('.copyImg');
   const selectedOS = document.querySelector('input[name="os"]:checked').value;
-  if (textArea.includes('Logging event:') && selectedOS === 'aos') {
+  if (textArea.value.includes('Logging event:') && selectedOS === 'aos') {
     convertJsonAOS();
     viewList();
-    textArea = '';
-    convertBtn.disabled = true;
+    textArea.value = '';
     copyClass.className = 'copyImg';
-  } else if (textArea.includes('bundle') && selectedOS === 'ios')  {
+  } else if (textArea.value.includes('bundle') && selectedOS === 'ios')  {
     convertJsoniOS();
     viewList();
-    textArea = '';
-    convertBtn.disabled = true;
+    textArea.value = '';
     copyClass.className = 'copyImg';
-  } else if (textArea == '') {
+  } else if (textArea.value == '') {
     alert('확인할 데이터가 없습니다.')
   } else {
     alert('OS를 확인해주세요.')
