@@ -166,10 +166,11 @@ function insertData(data, tbody, i) {
 function createTr(key, value, valueType, tbody, isItem) {
   const selectedOS = document.querySelector('input[name="os"]:checked').value;
   const isValid = isSearchValid(key, value, valueType);
+  let convertValue = key == 'error_code' ? errorMessage(value) : value;
 
   const rowHtml = `<tr>
     <td>${isItem}${key}</td>
-    <td>${value}</td>
+    <td>${convertValue}</td>
     ${selectedOS === 'ios' ? `<td><div class="${valueType}">${valueType}</div></td>` : '<td></td>'}
   </tr>`;
 
