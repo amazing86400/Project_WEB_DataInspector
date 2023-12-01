@@ -450,8 +450,7 @@ tbody > tr > td:nth-child(3) > div {
 }
 
 .error {
-  /* background-color: rgb(234, 89, 86); */
-  background-color: #FF5B22;
+  background-color: #ff4c4b;
   color: #fff !important;
 }
 

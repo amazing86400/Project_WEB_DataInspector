@@ -26,7 +26,7 @@ function viewList() {
     // 9시간을 더한 timestamp
     const timestampWithNineHours = timestamp + nineHoursInMillis;
     const formattedDate = timestampWithNineHours ? new Date(timestampWithNineHours).toISOString().replace('T', ' ').substring(0, 19) : '';
-    const eventName = event.eventParams.error_code ? 'firebase_error' : events[i].eventName;
+    const eventName = event.eventName == 'error_code' ? 'firebase_error' : events[i].eventName;
     const eventSummaryClass = event.eventParams.error_code ? 'error' : '';
 
     eventTag.insertAdjacentHTML(

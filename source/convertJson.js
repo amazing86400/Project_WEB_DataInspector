@@ -6,10 +6,13 @@ function convertJsonAOS() {
 
     // 이벤트 이름을 매핑하는 객체
     const convertKey = {
+      //이벤트 명
+      'screen_view(_vs)': 'screen_view',
+
       // 매개변수
       'ga_error(_err)': 'error_code',
-      // 'ga_error_length(_el)': 'error',
-      // 'ga_error_value(_ev)': 'error_parameter'
+      'ga_error_length(_el)': 'error',
+      'ga_error_value(_ev)': 'error_parameter'
     };
 
     // 이벤트데이터 초기화
@@ -22,8 +25,9 @@ function convertJsonAOS() {
   
     // 이벤트이름 설정
     const eventName = splitEventTxt[0].split('name=')[1];
-    eventData.eventName = eventName;
-    eventData.eventParams.event_name = eventName;
+    const convertEventName = convertKey[eventName] || eventName;
+    eventData.eventName = convertEventName;
+    eventData.eventParams.event_name = convertEventName;
   
     // 이벤트 매개변수 설정
     const transactionKey = ['currency', 'transaction_id', 'value', 'tax', 'shipping', 'affiliation', 'coupon', 'payment_type', 'shipping_tier'];
@@ -58,9 +62,6 @@ function convertJsonAOS() {
         });
         items.push(item) ;
 
-        // (old)
-        // const item = itemSection.replace(/(\w+)=([^,]+)/g, '"$1":"$2"');
-        // items.push(JSON.parse(`{${item.replace(/'/g, '"')}}`));
       }
       eventData.eventParams.items = items;
   
@@ -79,27 +80,19 @@ function convertJsonAOS() {
       dataObject[key] = checkValue;
     });
 
-    // (old)
-    // let formattedParams1 = paramSections.replace(/(\w+)=([^,]+)/g, '"$1":"$2"');
-    // let formattedParams2 = formattedParams1.replace(/(\w+\([^=]+\))=([^,]+)/g, '"$1":"$2"');
-    // let dataObject = JSON.parse(`{${formattedParams2.replace(/'/g, '"')}}`);
-  
     for (let key in dataObject) {
       let value = dataObject[key];
       if (key == 'ga_screen(_sn)') {
         eventData.eventParams['firebase_screen_name'] = value;
       } else if (key == 'ga_screen_class(_sc)') {
         eventData.eventParams['firebase_screen_class'] = value;
-      // } else if (key.includes('ep_') || key.includes('cm_') || key.includes('dimension') || key.includes('metric')) {
-      //   eventData.eventParams[key] = value;
+      } else if (key.includes('ep_') || key.includes('cm_') || key.includes('dimension') || key.includes('metric')) {
+        eventData.eventParams[key] = value;
       } else if (transactionKey.includes(key)) {
         eventData.eventParams.transactions = eventData.eventParams.transactions || {};
         eventData.eventParams.transactions[key] = value;
       } else {
-        const convertEventKey = convertKey[key] || key
-        eventData.eventParams[convertEventKey] = value;
-        // eventData.eventParams[key] = value;
-        // eventData.remainDatas[key] = value;
+        eventData.remainDatas[key] = value;
       }
     }
   
@@ -112,7 +105,6 @@ function convertJsonAOS() {
       for (let i in splitUserTxt) {
         const userProperty = splitUserTxt[i];
         if (userProperty.includes(',')) {
-        // if (userProperty.length > 0) {
           const key = userProperty.split('\n')[0].split(',')[0].trim();
           const value = userProperty.split('\n')[0].split(',')[1].trim();
           eventData.userProperties[key] = value;
