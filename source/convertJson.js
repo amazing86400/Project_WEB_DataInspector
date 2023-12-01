@@ -11,7 +11,7 @@ function convertJsonAOS() {
 
       // 매개변수
       'ga_error(_err)': 'error_code',
-      'ga_error_length(_el)': 'error',
+      // 'ga_error_length(_el)': 'error',
       'ga_error_value(_ev)': 'error_parameter'
     };
 
@@ -91,8 +91,12 @@ function convertJsonAOS() {
       } else if (transactionKey.includes(key)) {
         eventData.eventParams.transactions = eventData.eventParams.transactions || {};
         eventData.eventParams.transactions[key] = value;
+      } else if (key.includes('error')) {
+        const errorKey = convertKey[key] || key
+        eventData.eventParams[errorKey] = value;
       } else {
-        eventData.remainDatas[key] = value;
+        const remainKey = convertKey[key] || key
+        eventData.remainDatas[remainKey] = value;
       }
     }
   
@@ -246,7 +250,11 @@ function handleParam(paramSections, convertKey, eventData) {
     const type = isInt ? 'int' : isString ? 'string' : '';
 
     const target = transactionKey.includes(key) ? (eventData.eventParams.transactions = eventData.eventParams.transactions || {}) : eventData.eventParams;
-    target[convertKey[key] || key] = decodeUnicodeEscapes(value, type);
+    if (key == '_pn' || key == '_pc') {
+      eventData.remainDatas[convertKey[key] || key] = decodeUnicodeEscapes(value, type);
+    } else {
+      target[convertKey[key] || key] = decodeUnicodeEscapes(value, type);
+    }
   } else {
     const itemSections = paramSections.split('6: {\n        6: {\n          ');
     eventData.eventParams.items = eventData.eventParams.items || [];
