@@ -61,6 +61,18 @@
           <div>
             <div class="eventListHeader">Fired Events
               <img class="trashImg" src="assets/trash3.png" onclick="clearList();">
+              <img class="trashImg" src="assets/fliter.png" onclick="openFilter();">
+            </div>
+            <div class="filterBackground"></div>
+            <div class="filterArea">
+              <div class="remove">
+                <div class="filterCaption">Filter</div>
+                <div class="close" onclick="closeFilter();">&times;</div>
+                <ul>
+                  <div class="noEvent">Event not found...</div>
+                </ul>
+                <div class="filterBtn" onclick="toggle();">Save Filters</div>
+              </div>
             </div>
             <div class="eventList" id="eventList">
             </div>
@@ -137,9 +149,14 @@
               </table>
             </div>
           </div>
-          
         </div>
       </div>
     </div>
+    <script>
+      const modal_background = document.querySelector('.filterBackground');
+      document.addEventListener('click', (e) => {
+        e.target === modal_background ? closeFilter() : false
+      });
+    </script>
   </body>
 </html>

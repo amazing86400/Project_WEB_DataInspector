@@ -4,11 +4,13 @@ function setData() {
   const selectedOS = document.querySelector('input[name="os"]:checked').value;
   if (textArea.value.includes('Logging event:') && selectedOS === 'aos') {
     convertJsonAOS();
+    createFilterList();
     viewList();
     textArea.value = '';
     copyClass.className = 'copyImg';
   } else if (textArea.value.includes('bundle') && selectedOS === 'ios')  {
     convertJsoniOS();
+    createFilterList();
     viewList();
     textArea.value = '';
     copyClass.className = 'copyImg';
@@ -19,28 +21,99 @@ function setData() {
   }
 }
 
+// 필터 list 생성 함수
+function createFilterList() {
+  const ul = document.querySelector('ul');
+  const isChecked = document.querySelector('.view');
+  const eventNameSet = new Set(events.map(i => i.eventName));
+  const existingEventNames = new Set([...ul.children].map(li => li.innerText));
+  const missingEventNames = new Set([...eventNameSet].filter(eventName => !existingEventNames.has(eventName)));
+
+  function createCheckboxHTML(eventName) {
+    return `
+      <li>
+        <div class="checkbox-wrapper-4">
+          <input class="inp-cbx" id="${eventName}" name="filter" type="checkbox" value="${eventName}" ${isChecked ? '' : 'checked'}/>
+          <label class="cbx" for="${eventName}">
+            <span><svg width="12px" height="10px"><use xlink:href="#check-4"></use></svg></span>
+            <span>${eventName}</span>
+          </label>
+          <svg class="inline-svg">
+            <symbol id="check-4" viewbox="0 0 12 10">
+              <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+            </symbol>
+          </svg>
+        </div>
+      </li>`;
+  }
+
+  if (ul.children.length === 1) {
+    ul.replaceChildren()
+    eventNameSet.forEach(eventName => {
+      ul.insertAdjacentHTML('beforeend', createCheckboxHTML(eventName));
+    });
+  } else {
+    missingEventNames.forEach(eventName => {
+      ul.insertAdjacentHTML('beforeend', createCheckboxHTML(eventName));
+    });
+  }
+}
+
+// 필터 영역 내 apply버튼 클릭시 class명 추가
+function toggle() {
+  const checkedEvent = document.querySelectorAll('input[name="filter"]:checked');
+  if (checkedEvent.length > 0) {
+    document.querySelector('.eventList').classList.add('view');
+    closeFilter();
+    viewList();
+  } else {
+    alert('1개 이상 선택해야 합니다.');
+  }
+}
+
+function openFilter() {
+  const filterArea = document.querySelector('.filterArea > div');
+  filterArea.classList.remove('remove');
+  modal_background.style.display = 'block';
+}
+
+function closeFilter() {
+  const filterArea = document.querySelector('.filterArea > div');
+  filterArea.classList.add('remove');
+  modal_background.style.display = 'none';
+}
+
 // 변환 후 이벤트 리스트를 출력해주는 함수
 function viewList() {
   const eventTag = document.getElementById('eventList');
+  const filterEvent = document.querySelectorAll('input[name="filter"]:checked');
+  let eventNo = 1;
+  const checkedEvent = new Set();
+  filterEvent.forEach((e)=> {
+    checkedEvent.add(e.value);
+  })
   eventTag.replaceChildren();
   for (i in events) {
     const event = events[i]
-    const timestamp = Number(event.remainDatas.start_timestamp_millis);
-    const nineHoursInMillis = 9 * 60 * 60 * 1000;
-    // 9시간을 더한 timestamp
-    const timestampWithNineHours = timestamp + nineHoursInMillis;
-    const formattedDate = timestampWithNineHours ? new Date(timestampWithNineHours).toISOString().replace('T', ' ').substring(0, 19) : '';
-    const eventName = event.eventName == 'error_code' ? 'firebase_error' : events[i].eventName;
-    const eventSummaryClass = event.eventParams.error_code ? 'error' : '';
-
-    eventTag.insertAdjacentHTML(
-      'beforeend',
-      `<div class="eventSummary ${eventSummaryClass}" onclick="viewEvent(${i}, this)">
-        <div class="evnetNo">${Number(i) + 1}</div>
-        <div class="eventName">${eventName}</div>
-        <div class="time">${formattedDate}</div>
-      </div>`
-    );
+    if(checkedEvent.has(event.eventName)) {
+      const timestamp = Number(event.remainDatas.start_timestamp_millis);
+      const nineHoursInMillis = 9 * 60 * 60 * 1000;
+      // 9시간을 더한 timestamp
+      const timestampWithNineHours = timestamp + nineHoursInMillis;
+      const formattedDate = timestampWithNineHours ? new Date(timestampWithNineHours).toISOString().replace('T', ' ').substring(0, 19) : '';
+      const eventName = event.eventName == 'error_code' ? 'firebase_error' : events[i].eventName;
+      const eventSummaryClass = event.eventParams.error_code ? 'error' : '';
+  
+      eventTag.insertAdjacentHTML(
+        'beforeend',
+        `<div class="eventSummary ${eventSummaryClass}" onclick="viewEvent(${i}, this)">
+          <div class="evnetNo">${eventNo}</div>
+          <div class="eventName">${eventName}</div>
+          <div class="time">${formattedDate}</div>
+        </div>`
+      );
+      eventNo++
+    }
   }
 }
 
@@ -99,7 +172,8 @@ function viewEvent(no, clickDiv) {
 
 // 데이터를 HTML요소 추가해주는 함수
 function insertData(data, tbody, i) {  
-  const blockList = ['event_name', 'firebase_screen_id', '_c', 'realtime', 'ga_debug', 'firebase_event_origin', '_fi', '_fot', '_sid', '_sid', '_sno', '_lte', '_se', 'items', 'transactions', 'firebase_screen_name', 'firebase_screen_class', 'engagement_time_msec', '_ltv_KRW', '_mst', '_pi'];
+  const blockList = ['event_name', 'items', 'transactions', 'firebase_screen_name', 'firebase_screen_class', '_ltv_KRW', '_mst', '_pi'];
+  const remainList = ['firebase_screen_id', '_c', 'realtime', 'ga_debug', 'firebase_event_origin', '_fi', '_fot', '_sid', '_sid', '_sno', '_lte', '_se', 'engagement_time_msec', '_ltv_KRW', '_mst', '_pi'];
   const isItem = i ? 'item' + (Number(i) + 1) + '.' : '';
 
   // 화면 정보 설정(screen_name/screen_class)
@@ -154,10 +228,10 @@ function insertData(data, tbody, i) {
     }
   } else {
     for (const key in data) {
-      if (!blockList.includes(key)) {
-        const value = data[key];
-        const valueType = typeof value == 'string' ? 'str' : 'num';
-        createTr(key, value, valueType, tbody, isItem);
+      const value = data[key];
+      const valueType = typeof value === 'string' ? 'str' : 'num';
+      if (!blockList.includes(key) || remainList.includes(key)) {
+        createTr(key, value, valueType, remainList.includes(key) ? document.getElementById('remainTbody') : tbody, isItem);
       }
     }
   }
@@ -200,8 +274,10 @@ function clearTableContents() {
 // 이벤트 리스트 초기화 함수
 function clearList() {
   const eventList = document.getElementById('eventList');
+  const ul = document.querySelector('ul');
   events = [];
   eventList.replaceChildren();
+  ul.replaceChildren();
   clearTableContents();
 }
 

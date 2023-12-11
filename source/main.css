@@ -17,6 +17,14 @@ body {
   margin: 0px;
 }
 
+ul {
+  padding-left: 0px;
+}
+
+li {
+  list-style: none;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -232,22 +240,8 @@ input[type='radio']:checked + label > div > .aosIcon {
   margin-left: 5px;
 }
 
-button {
-  border-radius: 4px;
-  padding: 2px 16px;
-  border-color: transparent;
-  height: 36px;
-  font-size: 14px;
-  cursor: pointer;
-  background-color: rgb(249, 169, 43);
-}
-
 img {
   user-select: none;
-}
-
-.convertBtn {
-  margin: 333px 20px 0px 20px;
 }
 
 .copyImg {
@@ -473,6 +467,14 @@ tbody > tr > td:nth-child(3) > div {
 }
 
 .convertBtn {
+  border-radius: 4px;
+  padding: 2px 16px;
+  border-color: transparent;
+  height: 36px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: rgb(249, 169, 43);
+  margin: 333px 20px 0px 20px;
   color: white; 
   text-shadow:0 1px 0 rgba(0,0,0,0.15);
   box-shadow: 0 0 0 rgba(255,255,255,0.34) inset, 
@@ -486,3 +488,185 @@ tbody > tr > td:nth-child(3) > div {
   box-shadow: 0 1px 0 rgba(255,255,255,0.89),0 1px rgba(0,0,0,0.05) inset;
   position: relative;
 }
+
+.filterArea {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.filterArea > div {
+  margin-top: 10px;
+  width: 230px;
+  transition: .2s ease-out;
+  position: absolute;
+  visibility: visible;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  z-index: 2;
+}
+
+.remove {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.filterBtn {
+  padding: 0px 15px 10px;
+  font-size: 14px;
+  float: right;
+  color: rgb(18,129,211);
+  cursor: pointer;
+  user-select: none;
+  opacity: 0.78;
+}
+
+.filterBtn:hover {
+  transition: all 0.2s ease;
+  opacity: 1;
+}
+
+.filterCaption {
+  display: inline-block;
+  font-family: 'Noto';
+  font-weight: 500;
+  font-size: 17px;
+  padding: 5px 0px 0px 15px;
+}
+
+.filterBackground {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.noEvent {
+  font-family: 'Noto';
+  height: 36px;
+  line-height: 34px;
+  text-align: center;
+}
+
+.close {
+  float:right;
+  padding:4px 12px;
+  font-weight: 700;
+  text-shadow: 0 1px 0 #fff;
+  font-size: 1.3rem;
+  color: rgb(48, 58, 66);
+  cursor: pointer;
+}
+
+.close:hover {
+  transition: all 0.2s ease;
+  color: rgb(46, 158, 240);
+}
+
+.checkbox-wrapper-4 * {
+  box-sizing: border-box;
+}
+.checkbox-wrapper-4 .cbx {
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  padding: 6px 15px;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+.checkbox-wrapper-4 .cbx:not(:last-child) {
+  margin-right: 6px;
+}
+.checkbox-wrapper-4 .cbx:hover {
+  background: rgba(0,119,255,0.06);
+}
+.checkbox-wrapper-4 .cbx span {
+  float: left;
+  vertical-align: middle;
+  transform: translate3d(0, 0, 0);
+}
+.checkbox-wrapper-4 .cbx span:first-child {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  transform: scale(1);
+  border: 1px solid #cccfdb;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 1px rgba(0,16,75,0.05);
+}
+.checkbox-wrapper-4 .cbx span:first-child svg {
+  position: absolute;
+  top: 3px;
+  left: 2px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16px;
+  stroke-dashoffset: 16px;
+  transition: all 0.3s ease;
+  transition-delay: 0.1s;
+  transform: translate3d(0, 0, 0);
+}
+.checkbox-wrapper-4 .cbx span:last-child {
+  padding-left: 8px;
+  line-height: 18px;
+  font-size: 14px;
+  font-family: 'Noto';
+}
+.checkbox-wrapper-4 .cbx:hover span:first-child {
+  border-color: #07f;
+}
+.checkbox-wrapper-4 .inp-cbx {
+  position: absolute;
+  visibility: hidden;
+}
+.checkbox-wrapper-4 .inp-cbx:checked + .cbx span:first-child {
+  background: #07f;
+  border-color: #07f;
+  animation: wave-4 0.4s ease;
+}
+.checkbox-wrapper-4 .inp-cbx:checked + .cbx span:first-child svg {
+  stroke-dashoffset: 0;
+}
+.checkbox-wrapper-4 .inline-svg {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  user-select: none;
+}
+@media screen and (max-width: 640px) {
+  .checkbox-wrapper-4 .cbx {
+    width: 100%;
+    display: inline-block;
+  }
+}
+@-moz-keyframes wave-4 {
+  50% {
+    transform: scale(0.9);
+  }
+}
+@-webkit-keyframes wave-4 {
+  50% {
+    transform: scale(0.9);
+  }
+}
+@-o-keyframes wave-4 {
+  50% {
+    transform: scale(0.9);
+  }
+}
+@keyframes wave-4 {
+  50% {
+    transform: scale(0.9);
+  }
+}
+
