@@ -546,9 +546,15 @@ tbody > tr > td:nth-child(3) > div {
 
 .noEvent {
   font-family: 'Noto';
-  height: 36px;
   line-height: 34px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.noEvent > div:first-child {
+  margin-bottom: 20px;
 }
 
 .close {
@@ -670,3 +676,88 @@ tbody > tr > td:nth-child(3) > div {
   }
 }
 
+.loader {
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: 
+    radial-gradient(farthest-side,#ffa516 94%,#0000) top/8px 8px no-repeat,
+    conic-gradient(#0000 30%,#ffa516);
+  -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
+  animation: l13 1s infinite linear;
+}
+@keyframes l13{ 
+  100%{transform: rotate(1turn)}
+}
+
+.loadingField {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.loading {
+  width: fit-content;
+  font-size: 30px;
+  font-family: monospace;
+  line-height: 1.4;
+  font-weight: bold;
+  background-repeat: no-repeat; 
+  border-right: 5px solid #0000;
+  border-left: 5px solid #0000;
+  background-origin: border-box;
+  position: relative;
+  animation: l9-0 2s infinite;
+}
+.loading::before {
+  content:"No events found yet";
+}
+
+.loading2 {
+  margin-bottom: 20px;
+  display: inline-flex;
+  gap: 10px;
+}
+.loading2:before,
+.loading2:after {
+  content: "";
+  height: 20px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    linear-gradient(#222 0 0) top/100% 40% no-repeat,
+    radial-gradient(farthest-side,#000 95%,#0000) 50%/8px 8px no-repeat
+    #fff;
+  animation: l7 1.5s infinite alternate ease-in;
+}
+@keyframes l7 {
+  0%,
+  70% {background-size:100% 40%,8px 8px}
+  85% {background-size:100% 120%,8px 8px}
+  100% {background-size:100% 40%,8px 8px}
+}
+
+.change {
+  display: inline-flex;
+  gap: 10px;
+}
+.change:before,
+.change:after {
+  content: "";
+  height: 20px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    linear-gradient(#222 0 0) top/100% 0% no-repeat,
+    radial-gradient(farthest-side,#000 95%,#0000) 50%/8px 8px no-repeat
+    #fff;
+  animation: l9 2.5s infinite ease-in;
+}
+@keyframes l9 {
+  0%  {background-size:100% 0%,8px 8px;background-position:top, 50% 50%}
+  80% {background-size:100% 70%,8px 8px;background-position:top, 50% 70%}
+  84%,
+  100%{background-size:100% 0%,8px 8px;background-position:top, 50% 50%}
+}

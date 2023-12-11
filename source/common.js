@@ -277,8 +277,15 @@ function clearList() {
   const ul = document.querySelector('ul');
   events = [];
   eventList.replaceChildren();
+  eventList.insertAdjacentHTML('beforeend',`<div class="loadingField"><div class="loading2"></div><div class="loading"></div></div>`);
   ul.replaceChildren();
+  ul.insertAdjacentHTML('beforeend',`<div class="noEvent"><div>Event not found...</div><div class="loader"></div></div>`);
   clearTableContents();
+}
+
+function changeLoading() {
+  const targetDiv = document.querySelector(".loading2");
+  targetDiv.classList.add('change');
 }
 
 // 드롭다운 함수

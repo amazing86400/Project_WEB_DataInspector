@@ -69,12 +69,19 @@
                 <div class="filterCaption">Filter</div>
                 <div class="close" onclick="closeFilter();">&times;</div>
                 <ul>
-                  <div class="noEvent">Event not found...</div>
+                  <div class="noEvent">
+                    <div>Event not found...</div>
+                    <div class="loader"></div>
+                  </div>
                 </ul>
                 <div class="filterBtn" onclick="toggle();">Save Filters</div>
               </div>
             </div>
             <div class="eventList" id="eventList">
+              <div class="loadingField">
+                <div class="loading2"></div>
+                <div class="loading"></div>
+              </div>
             </div>
           </div>
           <div class="tableField">
@@ -157,6 +164,7 @@
       document.addEventListener('click', (e) => {
         e.target === modal_background ? closeFilter() : false
       });
+      setTimeout(changeLoading,10000);
     </script>
   </body>
 </html>
