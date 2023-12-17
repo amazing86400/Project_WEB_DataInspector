@@ -3,6 +3,7 @@ let events = [];
 
 function convertJsonAOS() {
   try {
+
     // 이벤트 이름을 매핑하는 객체
     const convertKey = {
       //이벤트 명
@@ -11,27 +12,27 @@ function convertJsonAOS() {
       // 매개변수
       'ga_error(_err)': 'error_code',
       // 'ga_error_length(_el)': 'error',
-      'ga_error_value(_ev)': 'error_parameter',
+      'ga_error_value(_ev)': 'error_parameter'
     };
 
     // 이벤트데이터 초기화
     let eventData = initializeEventData();
-
+  
     // 이벤트 매개변수 및 전자상거래 데이터 설정
     const eventInputBox = document.getElementById('inputBox');
     const eventInputTxt = eventInputBox.value.trim();
     const splitEventTxt = eventInputTxt.split(',params=Bundle');
-
+  
     // 이벤트이름 설정
     const eventName = splitEventTxt[0].split('name=')[1];
     const convertEventName = convertKey[eventName] || eventName;
     eventData.eventName = convertEventName;
     eventData.eventParams.event_name = convertEventName;
-
+  
     // 이벤트 매개변수 설정
     const transactionKey = ['currency', 'transaction_id', 'value', 'tax', 'shipping', 'affiliation', 'coupon', 'payment_type', 'shipping_tier'];
     let paramSections = splitEventTxt[1].replace(/^\[\{|\}\]$/g, '');
-
+  
     // 전자상거래 상품 정보 설정
     if (paramSections.includes('items=')) {
       // item 추출
@@ -39,11 +40,11 @@ function convertJsonAOS() {
       const endIndex = paramSections.indexOf('}]]');
       const sliceTxt = paramSections.slice(startIndex, endIndex);
       const itemSections = sliceTxt.split('{');
-
+  
       // items 변수 선언
       let items = [];
       eventData.eventParams.items = eventData.eventParams.items || [];
-
+  
       // 상품 데이터 설정
       for (let i = 1; i < itemSections.length; i++) {
         let itemSection = itemSections[i];
@@ -54,25 +55,26 @@ function convertJsonAOS() {
         // (new) 상품 객체로 변환
         const keyValuePairs = itemSection.split(', ');
         const item = {};
-        keyValuePairs.forEach((pair) => {
+        keyValuePairs.forEach(pair => {
           const [key, value] = pair.split('=');
           const checkValue = value !== '' ? value : 'Error: 값이 없습니다.';
           item[key] = checkValue;
         });
-        items.push(item);
+        items.push(item) ;
+
       }
       eventData.eventParams.items = items;
-
+  
       // items 상품 제거
       paramSections = paramSections.replace(sliceTxt + '}]], ', '');
     }
-
+  
     // 상품 정보 제외한 이 외 정보 설정
 
     // (new) 콤마로 구분된 키-값 쌍을 객체로 변환
     const keyValuePairs = paramSections.split(', ');
     const dataObject = {};
-    keyValuePairs.forEach((pair) => {
+    keyValuePairs.forEach(pair => {
       const [key, value] = pair.split('=');
       const checkValue = value !== '' ? value : 'Error: 값이 없습니다.';
       dataObject[key] = checkValue;
@@ -90,20 +92,20 @@ function convertJsonAOS() {
         eventData.eventParams.transactions = eventData.eventParams.transactions || {};
         eventData.eventParams.transactions[key] = value;
       } else if (key.includes('error')) {
-        const errorKey = convertKey[key] || key;
+        const errorKey = convertKey[key] || key
         eventData.eventParams[errorKey] = value;
       } else {
-        const remainKey = convertKey[key] || key;
+        const remainKey = convertKey[key] || key
         eventData.remainDatas[remainKey] = value;
       }
     }
-
+  
     // 사용자 속성 설정
     const userInputBox = document.getElementById('userInputBox');
     if (userInputBox) {
       const userInputTxt = userInputBox.value.trim();
       const splitUserTxt = userInputTxt.split('Setting user property: ');
-
+  
       for (let i in splitUserTxt) {
         const userProperty = splitUserTxt[i];
         if (userProperty.includes(',')) {
@@ -115,7 +117,7 @@ function convertJsonAOS() {
     }
     events.push(eventData);
     console.log(events);
-  } catch (e) {
+  } catch(e){
     console.log('convertJsonAOS 함수 ERROR');
     console.log(e.message);
   }
@@ -127,6 +129,7 @@ function convertJsonAOS() {
 */
 function convertJsoniOS() {
   try {
+
     // 이벤트 이름을 매핑하는 객체
     const convertKey = {
       // 이벤트명
@@ -168,12 +171,6 @@ function convertJsoniOS() {
       }
       const eventSections = bundleSections[i].split('event {'); // 이벤트 기준 Array
 
-      let userNremain = {
-        userProperties: {},
-        remainDatas: {},
-      };
-      handleRemainData(eventSections[eventSections.length - 1], userNremain); // 사용자 속성 및 이 외 데이터 설정
-
       // 이벤트 기준으로 반복문: ""값일 경우 대비하여 가장 처음 조건문 실행
       for (let j in eventSections) {
         if (eventSections[j].length > 1) {
@@ -190,10 +187,9 @@ function convertJsoniOS() {
               const eventName = convertKey[eventNameKey] || eventNameKey;
               eventData.eventName = decodeUnicodeEscapes(eventName, 'string'); // 이벤트명 설정
               eventData.eventParams.event_name = decodeUnicodeEscapes(eventName, 'string'); // 이벤트명 설정
+              handleRemainData(param, eventData); // 사용자 속성 및 이 외 데이터 설정
             }
           }
-          eventData.userProperties = userNremain['userProperties'];
-          eventData.remainDatas = userNremain['remainDatas'];
           events.push(eventData);
         }
       }
