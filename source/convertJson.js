@@ -84,7 +84,7 @@ function convertJsonAOS() {
         eventData.eventParams['firebase_screen_name'] = value;
       } else if (key == 'ga_screen_class(_sc)') {
         eventData.eventParams['firebase_screen_class'] = value;
-      } else if (key.includes('ep_') || key.includes('cm_') || key.includes('dimension') || key.includes('metric')) {
+      } else if (key.includes('ep_') || key.includes('cm_') || key.includes('dimension') || key.includes('metric') || key.includes('event_')) {
         eventData.eventParams[key] = value;
       } else if (transactionKey.includes(key)) {
         eventData.eventParams.transactions = eventData.eventParams.transactions || {};
@@ -93,8 +93,7 @@ function convertJsonAOS() {
         const errorKey = convertKey[key] || key;
         eventData.eventParams[errorKey] = value;
       } else {
-        const remainKey = convertKey[key] || key;
-        eventData.remainDatas[remainKey] = value;
+        eventData.remainDatas[key] = value;
       }
     }
 
