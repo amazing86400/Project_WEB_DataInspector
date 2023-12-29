@@ -170,6 +170,7 @@ function convertJsoniOS() {
       let userNremain = {
         userProperties: {},
         remainDatas: {},
+        eventDatas: {}
       };
       handleRemainData(eventSections[eventSections.length - 1], userNremain); // 사용자 속성 및 이 외 데이터 설정
 
@@ -192,6 +193,7 @@ function convertJsoniOS() {
             }
           }
           eventData.userProperties = userNremain['userProperties'];
+          eventData.eventParams = { ...eventData.eventParams,  ...userNremain.eventDatas};
           eventData.remainDatas = userNremain['remainDatas'];
           events.push(eventData);
         }
@@ -286,11 +288,13 @@ function handleRemainData(remainSection, eventData) {
       }
 
       const remainData = userProperty.split('\n  }\n')[1].split('\n  ');
+      const exceptRemain = ['platform','device_model','app_version','app_id','app_instance_id'];
       for (let k of remainData) {
         const key = k.split(':')[0].trim();
         const value = k.split(':')[1] ? k.split(':')[1].replace(/"/g, '').trim() : 'Error: 값이 없습니다.';
         if (key !== '') {
-          eventData.remainDatas[key] = value;
+          const target = exceptRemain.includes(key) ? eventData.eventDatas : eventData.remainDatas;
+          target[key] = value;
         }
       }
     }
