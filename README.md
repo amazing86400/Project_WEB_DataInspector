@@ -1,34 +1,35 @@
 # DataInspector
 
-iOS 및 Android GA4 데이터 검수를 보다 효율적으로 수행하기 위한 새로운 서비스를 개발하였습니다. 
-기존의 Debug View 및 로그를 활용한 검수 방법은 기기를 찾는 번거로움과 데이터 확인의 불편함이라는 문제점이 있었습니다. 
+iOS 및 Android GA4 데이터 검수를 보다 효율적으로 수행하기 위한 새로운 서비스를 개발하였습니다.
+기존의 Debug View 및 로그를 활용한 검수 방법은 기기를 찾는 번거로움과 데이터 확인의 불편함이라는 문제점이 있었습니다.
 이에 우리는 데이터를 쉽게 확인할 수 있고, 더 나아가 데이터 검수 작업을 효율적으로 수행할 수 있는 서비스를 제공하고자 합니다.
 <br>
 <br>
 <br>
 
-
 ## 프로젝트 소개
- - 프로젝트명: DataInspector
- - 기간: 2023. 11. 13 ~ 2023. 12. 01
- - 기술: HTML, CSS, JavaScript
- - 멤버: 신기범, 홍성호
- - 프로젝트 배포 주소(URL): http://210.114.9.23/GA_part/shhong/workspace/TechProject/Project_DataInspector/source/main.html
-<br>
+
+- 프로젝트명: DataInspector
+- 기간: 2023. 11. 13 ~ 2023. 12. 01 (약 2개월)
+- 기술: HTML, CSS, JavaScript
+- 멤버: 신기범, 홍성호
+- 프로젝트 배포 주소(URL): http://210.114.9.23/GA_part/shhong/workspace/TechProject/Project_DataInspector/source/main.html
+  <br>
 
 ## 프로젝트 기능
+
 ![그림1  메인페이지](https://github.com/amazing86400/Project_DataInspector/assets/96508771/23929c3c-8bb3-4c4a-a8b6-0f3be6f4d3a6)
 기능은 매우 간단하고 쉽습니다.
-
 
 1. "데이터 입력" 영역에 OS별 데이터 로그를 입력하고 "Convert" 버튼 클릭
 2. "이벤트 목록" 영역에서 이벤트 이름 확인 및 확인하고자 하는 이벤트 클릭
 3. "데이터" 영역에서 설정 데이터 확인
-<br>
-
+   <br>
 
 ## 세부 구현 기능
+
 **1. OS별 데이터 설정**
+
 <p align="center">
  <img src="https://github.com/amazing86400/Project_DataInspector/assets/96508771/cdc58fdf-ed32-436c-9408-7224b7b8b283" width="50%" height="50%" />
 </p>
@@ -39,6 +40,7 @@ iOS와 Android의 데이터 로그가 달라, 버튼을 통해 각각의 로그 
 <br>
 
 **2. 이벤트 목록 Clear**
+
 <p align="center">
  <img src="https://github.com/amazing86400/Project_DataInspector/assets/96508771/73fdd417-cf13-4ab6-a1d8-b09d0ffd3f72" width="50%" height="50%" />
 </p>
@@ -48,6 +50,7 @@ iOS와 Android의 데이터 로그가 달라, 버튼을 통해 각각의 로그 
 <br>
 
 **3. 데이터 목록 Copy**
+
 <p align="center">
  <img src="https://github.com/amazing86400/Project_DataInspector/assets/96508771/59d56602-8119-4e9b-b577-96cecb5b420b" width="50%" height="50%" />
 </p>
@@ -57,6 +60,7 @@ iOS와 Android의 데이터 로그가 달라, 버튼을 통해 각각의 로그 
 <br>
 
 **4. 에러 발생 확인**
+
 <p align="center">
  <img src="https://github.com/amazing86400/Project_DataInspector/assets/96508771/2bae1a28-fb7a-4804-9f22-53b28ff16161" width="50%" height="50%" />
 </p>
