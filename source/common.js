@@ -320,7 +320,7 @@ function isSearchValid(key, value, type) {
 }
 
 function copyData() {
-  const tables = ['epTbody', 'upTbody', 'transactionTbody', 'itemsTbody'];
+  const tables = ['epTbody', 'upTbody', 'transactionTbody', 'itemsTbody', 'remainTbody'];
   const formattedText = tables
     .map((tableId) => {
       const table = document.getElementById(tableId);
