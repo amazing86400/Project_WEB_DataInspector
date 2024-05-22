@@ -254,7 +254,7 @@ function decodeUnicodeEscapes(value, dataType) {
     const koreanValue = decodeURIComponent(escape(decodedValue));
 
     return koreanValue;
-  } else if (dataType == "int") {
+  } else if (dataType == "int" || dataType == "double") {
     const numberValue = Number(value);
 
     return numberValue;
@@ -289,7 +289,8 @@ function handleParam(paramSections, convertKey, eventData) {
     // 데이터 타입 설정
     const isInt = paramSections.includes("int_value");
     const isString = paramSections.includes("string_value");
-    const type = isInt ? "int" : isString ? "string" : "";
+    const isDouble = paramSections.includes("5");
+    const type = isInt ? "int" : isString ? "string" : isDouble ? "double" : "";
 
     const target = transactionKey.includes(key)
       ? (eventData.eventParams.transactions =
