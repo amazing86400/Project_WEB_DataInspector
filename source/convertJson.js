@@ -255,12 +255,28 @@ function decodeUnicodeEscapes(value, dataType) {
 
     return koreanValue;
   } else if (dataType == "int" || dataType == "double") {
-    const numberValue = Number(value);
+    const numberValue = value.includes('0x') ? Number(hexToDouble(value.substring(2))) : Number(value);
 
     return numberValue;
   }
   return value;
 }
+
+function hexToDouble(hex) {
+    // Create a buffer to hold the hex data
+    const buffer = new ArrayBuffer(8);
+    const view = new DataView(buffer);
+
+    // Parse the hex string and store it in the buffer
+    const highBits = parseInt(hex.slice(0, 8), 16);
+    const lowBits = parseInt(hex.slice(8), 16);
+    view.setUint32(0, highBits);
+    view.setUint32(4, lowBits);
+
+    // Use DataView to get the float64 value from the buffer
+    return view.getFloat64(0);
+}
+
 
 /*
   param 데이터 처리 함수
@@ -270,10 +286,18 @@ function handleParam(paramSections, convertKey, eventData) {
   if (!paramSections.includes("items")) {
     // key, value 설정
     const key = paramSections.split('"')[1];
-    const value = paramSections.split("value:")[1]
+    var value;
+
+    if (paramSections.includes('value:')) {
+      value = paramSections.split("value:")[1]
       ? paramSections.split("value:")[1].replaceAll('"', "").trim()
       : "Error: 값이 없습니다.";
-
+    } else if (paramSections.includes('5:')) {
+      value = paramSections.split("5:")[1]
+      ? paramSections.split("5:")[1].replaceAll('"', "").trim()
+      : "Error: 값이 없습니다.";
+    }
+    
     const transactionKey = [
       "currency",
       "transaction_id",
@@ -404,6 +428,11 @@ function handleItems(itemSection, items) {
             ? paramSection.split("3:")[1].split("}")[0].trim()
             : "Error: 값이 없습니다.";
           item[key] = decodeUnicodeEscapes(value, "int");
+        } else if (paramSection.includes("5:")) {
+          const value = paramSection.split("5:")[1]
+            ? paramSection.split("5:")[1].split("}")[0].trim()
+            : "Error: 값이 없습니다.";
+          item[key] = decodeUnicodeEscapes(value, "double");
         }
       } else {
         const value = paramSection.split('"')[1]
