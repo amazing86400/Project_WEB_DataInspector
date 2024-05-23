@@ -99,7 +99,10 @@ function convertJsonAOS() {
         key.includes("cm_") ||
         key.includes("dimension") ||
         key.includes("metric") ||
-        key.includes("event_")
+        key.includes("event_") ||
+        key.includes("category") ||
+        key.includes("action") ||
+        key.includes("label")
       ) {
         eventData.eventParams[key] = value;
       } else if (transactionKey.includes(key)) {
