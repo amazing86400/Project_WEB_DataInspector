@@ -265,7 +265,7 @@ img {
   transform: scaleY(-1);
 }
 
-.trashImg {
+.trashImg, .filterImg {
   width: 20px;
   float: right;
   margin-right: 15px;
