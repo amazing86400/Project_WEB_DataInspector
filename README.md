@@ -1,68 +1,79 @@
 # DataInspector
 
-iOS 및 Android GA4 데이터 검수를 보다 효율적으로 수행하기 위한 새로운 서비스를 개발하였습니다.
-기존의 Debug View 및 로그를 활용한 검수 방법은 기기를 찾는 번거로움과 데이터 확인의 불편함이라는 문제점이 있었습니다.
-이에 우리는 데이터를 쉽게 확인할 수 있고, 더 나아가 데이터 검수 작업을 효율적으로 수행할 수 있는 서비스를 제공하고자 합니다.
-<br>
-<br>
-<br>
+**DataInspector**는 iOS 및 Android GA4 데이터 검수를 보다 효율적으로 수행하기 위해 개발된 서비스입니다. 기존의 Debug View와 로그를 활용한 검수 방법에서 발생하는 번거로움을 해결하고, 데이터를 쉽게 확인할 수 있는 직관적인 UI와 효율적인 검수 프로세스를 제공합니다.
+
+---
 
 ## 프로젝트 소개
 
-- 프로젝트명: DataInspector
-- 기간: 2023. 11. 13 ~ 2023. 12. 01 (약 2개월)
-- 기술: HTML, CSS, JavaScript
-- 멤버: 신기범, 홍성호
-- 프로젝트 배포 주소(URL): http://210.114.9.23/GA_part/shhong/workspace/TechProject/Project_DataInspector/source/main.html
-  <br>
+- **프로젝트명**: DataInspector  
+- **개발 기간**: 2023. 11. 13 ~ 2023. 12. 01 (약 2개월)  
+- **사용 기술**: HTML, CSS, JavaScript  
+- **개발 멤버**: 신기범, 홍성호  
+- **프로젝트 배포 URL**: [DataInspector](http://210.114.9.23/GA_part/shhong/workspace/TechProject/Project_DataInspector/source/main.html)
 
-## 프로젝트 기능
+---
 
-![그림1  메인페이지](https://github.com/amazing86400/Project_DataInspector/assets/96508771/23929c3c-8bb3-4c4a-a8b6-0f3be6f4d3a6)
-기능은 매우 간단하고 쉽습니다.
+## 주요 기능
 
-1. "데이터 입력" 영역에 OS별 데이터 로그를 입력하고 "Convert" 버튼 클릭
-2. "이벤트 목록" 영역에서 이벤트 이름 확인 및 확인하고자 하는 이벤트 클릭
-3. "데이터" 영역에서 설정 데이터 확인
-   <br>
+![메인 페이지](https://github.com/amazing86400/Project_DataInspector/assets/96508771/23929c3c-8bb3-4c4a-a8b6-0f3be6f4d3a6)
+
+DataInspector는 단순하고 직관적인 데이터 검수 프로세스를 제공합니다.  
+아래의 간단한 단계를 통해 데이터를 확인하고 검수할 수 있습니다:
+
+1. **데이터 입력**: OS별 데이터 로그를 입력한 뒤, "Convert" 버튼 클릭
+2. **이벤트 확인**: "이벤트 목록"에서 이벤트 이름을 확인하고 원하는 이벤트를 클릭
+3. **데이터 확인**: "데이터" 영역에서 선택한 이벤트의 설정 데이터 확인
+
+---
 
 ## 세부 구현 기능
 
-**1. OS별 데이터 설정**
+### 1. OS별 데이터 설정
 
 <p align="center">
- <img src="https://github.com/amazing86400/Project_DataInspector/assets/96508771/cdc58fdf-ed32-436c-9408-7224b7b8b283" width="50%" height="50%" />
+ <img src="https://github.com/amazing86400/Project_DataInspector/assets/96508771/cdc58fdf-ed32-436c-9408-7224b7b8b283" width="50%" />
 </p>
 
-iOS와 Android의 데이터 로그가 달라, 버튼을 통해 각각의 로그 특징에 알맞게 설정할 수 있도록 구현했습니다.
-버튼 클릭을 통해 OS가 변경되면 이전에 설정된 데이터를 모두 초기화해 줬으며, Android의 경우 이벤트 매개변수와 사용자 속성 입력란을 분리하여 더 직관적인 UI를 나타냈습니다.
-<br>
-<br>
+- iOS와 Android의 데이터 로그 차이를 반영하여 OS에 따라 UI와 데이터를 자동으로 초기화합니다.
+- **Android**의 경우, 이벤트 매개변수와 사용자 속성 입력란을 분리하여 직관적인 UI를 제공합니다.
 
-**2. 이벤트 목록 Clear**
+---
+
+### 2. 이벤트 목록 초기화
 
 <p align="center">
- <img src="https://github.com/amazing86400/Project_DataInspector/assets/96508771/73fdd417-cf13-4ab6-a1d8-b09d0ffd3f72" width="50%" height="50%" />
+ <img src="https://github.com/amazing86400/Project_DataInspector/assets/96508771/73fdd417-cf13-4ab6-a1d8-b09d0ffd3f72" width="50%" />
 </p>
 
-이벤트 목록이 길어지는 것을 방지하고자 "이벤트 목록" 우측 상단에 위치한 쓰레기통 버튼을 클릭하면 이벤트 목록을 모두 지우는 기능을 구현했습니다. 버튼을 클릭하면 설정했던 모든 이벤트가 초기화됩니다.
-<br>
-<br>
+- "이벤트 목록" 상단의 **쓰레기통 버튼**을 클릭하면 모든 이벤트를 초기화할 수 있습니다.
+- 긴 이벤트 목록을 효과적으로 관리하며, 검수 프로세스를 간소화합니다.
 
-**3. 데이터 목록 Copy**
+---
+
+### 3. 데이터 복사 기능
 
 <p align="center">
- <img src="https://github.com/amazing86400/Project_DataInspector/assets/96508771/59d56602-8119-4e9b-b577-96cecb5b420b" width="50%" height="50%" />
+ <img src="https://github.com/amazing86400/Project_DataInspector/assets/96508771/59d56602-8119-4e9b-b577-96cecb5b420b" width="50%" />
 </p>
 
-데이터 검수 후 검수 확인서 작업을 좀 더 효율적으로 하고자 설정된 데이터를 복사할 수 있는 기능을 구현했습니다. 버튼을 클릭하면 설정된 데이터를 복사하여 활용할 수 있습니다.
-<br>
-<br>
+- 검수 작업 완료 후, 설정된 데이터를 복사하여 검수 확인서 등 다른 작업에 활용할 수 있습니다.
+- **복사 버튼** 클릭 시, 데이터가 클립보드에 저장됩니다.
 
-**4. 에러 발생 확인**
+---
+
+### 4. 에러 확인
 
 <p align="center">
- <img src="https://github.com/amazing86400/Project_DataInspector/assets/96508771/2bae1a28-fb7a-4804-9f22-53b28ff16161" width="50%" height="50%" />
+ <img src="https://github.com/amazing86400/Project_DataInspector/assets/96508771/2bae1a28-fb7a-4804-9f22-53b28ff16161" width="50%" />
 </p>
 
-에러 발생 시 한눈에 확인하기 쉽도록 빨간색으로 표시하였고, 어디서 어떤 에러가 발생했는지 확인할 수 있도록 기능을 구현했습니다.
+- 에러 발생 시 해당 항목을 **빨간색으로 표시**하여 한눈에 에러를 확인할 수 있도록 구현했습니다.
+- 에러가 발생한 **위치와 원인**을 직관적으로 확인 가능합니다.
+
+---
+
+## 프로젝트의 의의
+
+**DataInspector**는 단순히 데이터를 확인하는 도구를 넘어, 효율적인 GA4 데이터 검수 프로세스를 지원하는 강력한 도구입니다.
+이 프로젝트를 통해 개발자와 비개발자 모두 손쉽게 데이터 검수를 수행할 수 있으며, 검수 과정에서 발생하는 오류와 시간을 크게 절감할 수 있습니다.
