@@ -66,7 +66,7 @@ li {
   /* margin-right: 1px; */
 }
 
-.firebase, .gtm {
+.firebase, .gtm, .gaTester {
   display: flex;
   height: 40px;
   align-items: center;
@@ -108,6 +108,20 @@ a {
   padding-right: 9px;
   color: rgb(59,68,81);
   /* border-bottom: none; */
+}
+
+.gaImg {
+  width: 24px;
+  margin: 0px 5px; 
+}
+
+.gaTester {
+  width: 120px;
+  font-family: 'Noto';
+  font-size: 15px;
+  font-weight: 400;
+  padding-right: 9px;
+  color: rgb(59,68,81);
 }
 
 .contentContainer {
