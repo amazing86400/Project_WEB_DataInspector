@@ -5,6 +5,7 @@
 
 body {
   display: inline-block;
+  display: block;
   height: 92vh;
   margin: 0px;
 }
@@ -343,7 +344,7 @@ img {
 }
 
 table {
-  width: 580px;
+  width: 560px;
   /* width: 100%; */
   /* max-width: 700px; */
   word-break:break-all;
