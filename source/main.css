@@ -4,6 +4,7 @@
 }
 
 body {
+  display: inline-block;
   height: 92vh;
   margin: 0px;
 }
@@ -50,7 +51,6 @@ li {
   display: grid;
   grid-template-rows: 0fr auto;
   margin: 0px 8px;
-  overflow-y: auto;
   height: 100%;
 }
 
