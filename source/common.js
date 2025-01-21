@@ -381,7 +381,15 @@ function changeOS(os) {
 }
 
 function contactUs() {
-  alert('준비중입니다.')
+  const url = document.location.pathname;
+  console.log(url);
+  if (url.includes('Project_DataInspector')) {
+    window.open('https://github.com/amazing86400/Project_WEB_DataInspector');
+  } else if (url.includes('Project_WEB_GATester')) {
+    window.open('https://github.com/amazing86400/Project_WEB_GATester');
+  } else if (url.includes('GTMgenerator')) {
+    window.open('https://github.com/amazing86400/Project_WEB_GTMgenerator');
+  }
 }
 
 // 에러 메시지 정의 함수
