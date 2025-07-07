@@ -285,7 +285,7 @@ function clearList() {
 
 function changeLoading() {
   const targetDiv = document.querySelector(".loading2");
-  targetDiv.classList.add('change');
+  targetDiv?.classList.add('change');
 }
 
 // 드롭다운 함수

@@ -168,6 +168,7 @@ function convertJsoniOS() {
       _el: "error",
       _r: "realtime",
       _dbg: "ga_debug",
+      _id: "user_id",
 
       _sid: "ga_session_id",
       _sno: "ga_session_number",
@@ -218,6 +219,10 @@ function convertJsoniOS() {
             }
           }
           eventData.userProperties = userNremain["userProperties"];
+          if (eventData.userProperties.hasOwnProperty('_id')) {
+            eventData.userProperties.user_id = eventData.userProperties._id;
+            delete eventData.userProperties._id
+          }
           eventData.eventParams = {
             ...eventData.eventParams,
             ...userNremain.eventDatas,
