@@ -4,8 +4,8 @@
 }
 
 body {
-  display: inline-block;
-  /* display: block; */
+  /* display: inline-block; */
+  display: block;
   height: 92vh;
   margin: 0px;
 }
@@ -491,6 +491,7 @@ tbody > tr > td:nth-child(3) > div {
 .filterArea {
   display: flex;
   justify-content: flex-end;
+  /* transition: .2s ease-out; */
 }
 
 .filterArea > div {
@@ -498,7 +499,7 @@ tbody > tr > td:nth-child(3) > div {
   width: 230px;
   transition: .2s ease-out;
   position: absolute;
-  visibility: visible;
+  /* visibility: visible; */
   background: #fff;
   border-radius: 4px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
@@ -617,7 +618,7 @@ tbody > tr > td:nth-child(3) > div {
   stroke-dasharray: 16px;
   stroke-dashoffset: 16px;
   transition: all 0.3s ease;
-  transition-delay: 0.1s;
+  /* transition-delay: 0.1s; */
   transform: translate3d(0, 0, 0);
 }
 .checkbox-wrapper-4 .cbx span:last-child {

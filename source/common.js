@@ -73,13 +73,17 @@ function toggle() {
 
 function openFilter() {
   const filterArea = document.querySelector('.filterArea > div');
+  // const filterArea2 = document.querySelector('.filterArea');
   filterArea.classList.remove('remove');
+  // filterArea2.classList.remove('remove');
   modal_background.style.display = 'block';
 }
 
 function closeFilter() {
-  const filterArea = document.querySelector('.filterArea > div');
-  filterArea.classList.add('remove');
+  // const filterArea = document.querySelector('.filterArea');
+  const filterArea2 = document.querySelector('.filterArea > div');
+  // filterArea.classList.add('remove');
+  filterArea2.classList.add('remove');
   modal_background.style.display = 'none';
 }
 

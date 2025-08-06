@@ -202,6 +202,9 @@ function convertJsoniOS() {
         if (eventSections[j].length > 1) {
           let eventData = initializeEventData(); // 이벤트 데이터 초기화
           const paramSections = eventSections[j].split("\n    }"); // param 기준 Array
+          // if (!paramSections.at(-1).includes("name:")) {
+          //   paramSections.pop();
+          // }
 
           // 매개변수 기준으로 반복문: 데이터 설정
           for (let k = 0; k < paramSections.length; k++) {
@@ -257,7 +260,7 @@ function initializeEventData() {
   인코딩 된 한글 문자열을 디코딩 해주는 함수입니다.
 */
 function decodeUnicodeEscapes(value, dataType) {
-  if (dataType == "string" && !value.includes("Error:")) {
+  if (dataType == "string" && !value?.includes("Error:")) {
     const decodedValue = eval(`"${value}"`);
     const koreanValue = decodeURIComponent(escape(decodedValue));
 
