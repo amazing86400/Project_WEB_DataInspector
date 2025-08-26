@@ -260,11 +260,20 @@ function initializeEventData() {
   인코딩 된 한글 문자열을 디코딩 해주는 함수입니다.
 */
 function decodeUnicodeEscapes(value, dataType) {
-  if (dataType == "string" && !value?.includes("Error:")) {
-    const decodedValue = eval(`"${value}"`);
-    const koreanValue = decodeURIComponent(escape(decodedValue));
+  if (dataType === "string" && value && !value.includes("Error:")) {
 
-    return koreanValue;
+    // Optional(...) 내부 문자열 처리 + 일반 문자열 처리
+    return value.replace(/(?:Optional\("([^"]*?)"\))|([^Optional"].*?)(?=Optional\(|$)/g, (_, optionalInner, normalInner) => {
+      const target = optionalInner ?? normalInner;
+      if (!target) return '';
+
+      const fixedEscapes = target.replace(/\\\\/g, '\\');
+      const decodedValue = eval(`"${fixedEscapes}"`);
+      const koreanValue = decodeURIComponent(escape(decodedValue));
+
+      // Optional 구조를 유지
+      return optionalInner ? `Optional("${koreanValue}")` : koreanValue;
+    });
   } else if (dataType == "int" || dataType == "double") {
     const numberValue = value.includes('0x') ? Number(hexToDouble(value.substring(2))) : Number(value);
 
