@@ -26,7 +26,7 @@ function createFilterList() {
   const ul = document.querySelector('ul');
   const isChecked = document.querySelector('.view');
   const eventNameSet = new Set(events.map(i => i.eventName));
-  const existingEventNames = new Set([...ul.children].map(li => li.innerText));
+  const existingEventNames = new Set([...ul.children].map(li => li.querySelector('input')?.value));
   const missingEventNames = new Set([...eventNameSet].filter(eventName => !existingEventNames.has(eventName)));
 
   function createCheckboxHTML(eventName) {
