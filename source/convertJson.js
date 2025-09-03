@@ -455,10 +455,12 @@ function handleItems(itemSection, items) {
           item[key] = decodeUnicodeEscapes(value, "double");
         }
       } else {
-        const key = paramSection.match(/0x[0-9a-fA-F]+/)[0];
-        const convertKey = new TextDecoder().decode(Uint8Array.from(key.match(/../g).reverse().map(h => parseInt(h, 16))));
-        const value = paramSection.split('"')[1] ? paramSection.split('"')[1].trim() : "Error: 값이 없습니다.";
-        item['i' + convertKey] = decodeUnicodeEscapes(value, "string");
+        if (paramSection.match(/0x[0-9a-fA-F]+/)[0]) {
+          const key = paramSection.match(/0x[0-9a-fA-F]+/)[0];
+          const convertKey = new TextDecoder().decode(Uint8Array.from(key.match(/../g).reverse().map(h => parseInt(h, 16))));
+          const value = paramSection.split('"')[1] ? paramSection.split('"')[1].trim() : "Error: 값이 없습니다.";
+          item['i' + convertKey] = decodeUnicodeEscapes(value, "string");
+        }
       }
     }
     items.push(item);
